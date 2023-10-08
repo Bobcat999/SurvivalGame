@@ -7,6 +7,7 @@ public class MapGeneration : MonoBehaviour
 
     public BiomePreset[] biomes;
     public Tilemap groundMap;
+    public Tilemap surfaceMap;
 
     [Header("Dimensions")]
     public int width = 50;
@@ -31,23 +32,16 @@ public class MapGeneration : MonoBehaviour
     private float[,] heatMap;
 
 
-    void Start()
-    {
-        GenerateMap();
-    }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GenerateMap();
+            GenerateMap(Random.Range(0,1000));
         }
     }
 
-    void GenerateMap()
+    public void GenerateMap(int seed)
     {
-        seed = Random.Range(0f, 100f);
-
         //set the seeds to random numbers
         foreach (Wave wave in heightWaves)
         {
@@ -87,6 +81,9 @@ public class MapGeneration : MonoBehaviour
                 groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y,0), tile);
             }
         }
+
+        //generate surface things
+        surfaceMap.ClearAllTiles();
     }
 
     BiomePreset GetBiome(float height, float moisture, float heat)

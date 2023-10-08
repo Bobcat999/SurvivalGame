@@ -14,13 +14,22 @@ public class WorldManager : MonoBehaviour
         else Destroy(this);
     }
 
+    //world loading
     public const string worldFolder = "saves";
+    public static BaseCommand loadCommand;
 
 
     public List<Tilemap> tilemaps;
     public List<CustomTile> tiles = new List<CustomTile>();
 
     public PlayerMovement player;
+
+    public MapGeneration mapGeneration;
+
+    public void Start()
+    {
+        loadCommand?.execute();
+    }
 
     private void Update()
     {
@@ -35,6 +44,29 @@ public class WorldManager : MonoBehaviour
         }
     }
 
+    public static string GetWorldsDirectory()
+    {
+        return Application.persistentDataPath + "/" + worldFolder;
+    }
+
+    public static void SetUpWorldsDirectory()
+    {
+        if (!Directory.Exists(GetWorldsDirectory()))
+        {
+            Directory.CreateDirectory(GetWorldsDirectory());
+        }
+    }
+
+    public static void SetLoadCommand(BaseCommand command)
+    {
+        loadCommand = command;
+    }
+
+    public void CreateNewWorld(string worldName, int seed)
+    {
+        mapGeneration.GenerateMap(seed);
+        SaveWorld(worldName);
+    }
 
     public void SaveWorld(string worldName)
     {
@@ -71,14 +103,16 @@ public class WorldManager : MonoBehaviour
         worldData.playerPos = player.transform.position; 
 
         string json = JsonUtility.ToJson(worldData, true);
-        File.WriteAllText(Application.dataPath + "/" + worldFolder + "/" + worldName + ".json", json);
+        SetUpWorldsDirectory();
+
+        File.WriteAllText(GetWorldsDirectory() + "/" + worldName + ".json", json);
 
         Debug.Log("Level Was Saved");
     }
 
     public void LoadWorld(string worldName)
     {
-        string json = File.ReadAllText(Application.dataPath + "/" + worldFolder + "/" + worldName + ".json");
+        string json = File.ReadAllText(GetWorldsDirectory() + "/" + worldName + ".json");
         WorldData data = JsonUtility.FromJson<WorldData>(json);
 
         //load tilemap

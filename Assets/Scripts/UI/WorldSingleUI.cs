@@ -8,22 +8,30 @@ public class WorldSingleUI : MonoBehaviour
 {
 
     string worldName;
+    string filePath;
 
-    [SerializeField] Button button;
+    [SerializeField] Button playButton;
+    [SerializeField] Button editButton;
     [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] WorldEditUI worldEditUi;
 
     private void Awake()
     {
-        button.onClick.AddListener(() =>
+        playButton.onClick.AddListener(() =>
         {
             WorldManager.SetLoadCommand(new LoadWorldCommand(worldName));
             Loader.Load(Loader.Scene.GameScene);
         });
+        editButton.onClick.AddListener(() =>
+        {
+            worldEditUi.EditWorldFile(filePath);
+        });
     }
 
-    public void SetWorld(string worldName)
+    public void SetWorld(string worldName, string filePath)
     {
         this.worldName = worldName;
+        this.filePath = filePath;
         nameText.text = worldName;
     }
 

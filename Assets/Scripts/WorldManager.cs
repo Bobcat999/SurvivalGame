@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -9,17 +12,17 @@ public class WorldManager : MonoBehaviour
     public static WorldManager Instance;
     private void Awake()
     {
-        if (Instance == null) 
+        if (Instance == null)
             Instance = this;
         else Destroy(this);
 
         foreach (Tilemap tilemap in tilemaps)
         {
-            foreach(Tilemaps num in System.Enum.GetValues(typeof(Tilemaps)))
+            foreach (Tilemaps num in System.Enum.GetValues(typeof(Tilemaps)))
             {
-                if(tilemap.name == num.ToString())
+                if (tilemap.name == num.ToString())
                 {
-                    if(!layers.ContainsKey((int)num)) layers.Add((int)num, tilemap);
+                    if (!layers.ContainsKey((int)num)) layers.Add((int)num, tilemap);
                 }
             }
         }
@@ -29,6 +32,14 @@ public class WorldManager : MonoBehaviour
     public const string worldFolder = "saves";
     public static BaseCommand loadCommand;
     public string currentWorldName;
+
+    public static event Action OnLoadingStarted;
+    public static event Action OnLoadingEnded;
+    public static event Action OnCreateWorldStarted;
+    public static event Action OnCreateWorldEnded;
+    public static event Action OnSavingStarted;
+    public static event Action OnSavingEnded;
+
 
 
     [SerializeField] List<Tilemap> tilemaps = new List<Tilemap>();
@@ -81,15 +92,22 @@ public class WorldManager : MonoBehaviour
         loadCommand = command;
     }
 
-    public void CreateNewWorld(string worldName, int seed)
+    public async void CreateNewWorld(string worldName, int seed)
     {
+        OnCreateWorldStarted?.Invoke();
+
         currentWorldName = worldName;
+
         //generate the map
-        mapGeneration.GenerateMap(seed);
+        await mapGeneration.GenerateMap(seed);
         //find a spawnpoint for the player
         player.transform.position = FindPlayerSpawnPos();
 
+        OnCreateWorldEnded?.Invoke();
+
+        //save the loaded world
         SaveWorldAs(worldName);
+
     }
 
     public Vector3 FindPlayerSpawnPos()
@@ -97,19 +115,20 @@ public class WorldManager : MonoBehaviour
         Tilemap groundMap = layers[(int)Tilemaps.Ground];
         TileBase water = tiles.Find(t => t.id == "water").tile;
 
-        if(groundMap.GetTile(Vector3Int.zero) != water)
+        if (groundMap.GetTile(Vector3Int.zero) != water)
         {
             return Vector3.zero;
         }
 
-        for(int size = 5; size < 50; size += 5)
+        for (int size = 5; size < 50; size += 5)
         {
-            for(int x = -size; x <= size; x++)
+            for (int x = -size; x <= size; x++)
             {
-                for(int y = -size; y <= size; y++)
+                for (int y = -size; y <= size; y++)
                 {
-                    if(groundMap.GetTile(new Vector3Int(x, y, 0)) != water){
-                        return new Vector3(x+.5f,y+.5f, 0);
+                    if (groundMap.GetTile(new Vector3Int(x, y, 0)) != water)
+                    {
+                        return new Vector3(x + .5f, y + .5f, 0);
                     }
                 }
             }
@@ -122,14 +141,14 @@ public class WorldManager : MonoBehaviour
     {
         SaveWorldAs(currentWorldName);
     }
-    
+
     public void SaveWorldAs(string worldName)
     {
-        currentWorldName = worldName;
         Debug.Log("Started Saving");
 
-        WorldData worldData = new WorldData();
+        currentWorldName = worldName;
 
+        WorldData worldData = new WorldData();
 
         foreach (int layer in layers.Keys)
         {
@@ -137,8 +156,9 @@ public class WorldManager : MonoBehaviour
         }
 
         //save the tilemaps
-        foreach(LayerData layerData in worldData.layers) {
-            if(!layers.TryGetValue(layerData.layerId, out Tilemap tilemap))break;
+        foreach (LayerData layerData in worldData.layers)
+        {
+            if (!layers.TryGetValue(layerData.layerId, out Tilemap tilemap)) break;
 
             BoundsInt bounds = tilemap.cellBounds;
             for (int x = bounds.min.x; x < bounds.max.x; x++)
@@ -147,7 +167,7 @@ public class WorldManager : MonoBehaviour
                 {
                     TileBase temp = tilemap.GetTile(new Vector3Int(x, y, 0));
 
-                    CustomTile tempTile = tiles.Find(t => t.tile==temp);
+                    CustomTile tempTile = tiles.Find(t => t.tile == temp);
 
                     if (temp != null)
                     {
@@ -163,39 +183,65 @@ public class WorldManager : MonoBehaviour
         worldData.playerPos = player.transform.position;
 
         string json = JsonUtility.ToJson(worldData, true);
+
+
         SetUpWorldsDirectory();
 
         File.WriteAllText(GetWorldsDirectory() + "/" + worldName + ".json", json);
 
-        Debug.Log("Level Was Saved");
+        OnSavingEnded?.Invoke();
     }
 
-    public void LoadWorld(string worldName)
+    public async void LoadWorld(string worldName)
     {
+        OnLoadingStarted?.Invoke();
+
         currentWorldName = worldName;
 
-        string json = File.ReadAllText(GetWorldsDirectory() + "/" + worldName + ".json");
-        WorldData worldData = JsonUtility.FromJson<WorldData>(json);
+        string filePath = GetWorldsDirectory() + "/" + worldName + ".json";
 
-        foreach(LayerData layerData in worldData.layers)
+        if (File.Exists(filePath))
         {
-            if (!layers.TryGetValue(layerData.layerId, out Tilemap tilemap)) break;
+            string json = await ReadFileAsync(filePath);
+            WorldData worldData = JsonUtility.FromJson<WorldData>(json);
 
-            //clear tilemap
-            tilemap.ClearAllTiles();
-
-            for (int i = 0; i < layerData.tiles.Count; i++)
+            foreach (LayerData layerData in worldData.layers)
             {
-                TileBase tile = tiles.Find(t => t.id == layerData.tiles[i]).tile;
-                if(tile) tilemap.SetTile(new Vector3Int(layerData.posesX[i], layerData.posesY[i], 0), tile);
+                if (layers.TryGetValue(layerData.layerId, out Tilemap tilemap))
+                {
+                    // Clear tilemap
+                    tilemap.ClearAllTiles();
+
+                    for (int i = 0; i < layerData.tiles.Count; i++)
+                    {
+                        TileBase tile = tiles.Find(t => t.id == layerData.tiles[i]).tile;
+                        if (tile)
+                        {
+                            tilemap.SetTile(new Vector3Int(layerData.posesX[i], layerData.posesY[i], 0), tile);
+                        }
+                    }
+                }
             }
 
+            // Set player position
+            player.transform.position = worldData.playerPos;
+        }
+        else
+        {
+            Debug.LogError("World file not found: " + filePath);
         }
 
-        //set player position
-        player.transform.position = worldData.playerPos;
-        
+        OnLoadingEnded?.Invoke();
     }
+
+    private async Task<string> ReadFileAsync(string filePath)
+    {
+        using (StreamReader reader = File.OpenText(filePath))
+        {
+            return await reader.ReadToEndAsync();
+        }
+    }
+
 }
 
 [System.Serializable]

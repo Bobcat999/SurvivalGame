@@ -48,7 +48,7 @@ public class WorldSelectUI : MonoBehaviour
             Transform worldTransform = Instantiate(worldSingleUIPrefab, worldsHolder);
             worldTransform.gameObject.SetActive(true);
 
-            worldTransform.GetComponent<WorldSingleUI>().SetWorld(Path.GetFileNameWithoutExtension(s));
+            worldTransform.GetComponent<WorldSingleUI>().SetWorld(Path.GetFileNameWithoutExtension(s), s);
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 public class MapGeneration : MonoBehaviour
@@ -40,28 +41,49 @@ public class MapGeneration : MonoBehaviour
         }
     }
 
-    public void GenerateMap(int seed)
+    public async Task GenerateMap(int seed)
     {
-        //set the seeds to random numbers
+        await Task.Yield(); // Yield briefly to ensure this method is asynchronous.
+
+        // Initialize seeds
         foreach (Wave wave in heightWaves)
         {
             wave.seed = seed * heightWaveOffest;
         }
-        foreach(Wave wave in moistureWaves)
+        foreach (Wave wave in moistureWaves)
         {
             wave.seed = seed * moistureWaveOffest;
         }
-        foreach(Wave wave in heatWaves)
+        foreach (Wave wave in heatWaves)
         {
             wave.seed = seed * heatWaveOffest;
         }
 
-        // height map
-        heightMap = ProceduralGeneration.Generate(width, height, scale, heightWaves, offset);
-        // moisture map
-        moistureMap = ProceduralGeneration.Generate(width, height, scale, moistureWaves, offset);
-        // heat map
-        heatMap = ProceduralGeneration.Generate(width, height, scale, heatWaves, offset);
+        // height map (Calculate asynchronously)
+        Task<float[,]> heightMapTask = Task.Run(() =>
+        {
+            return ProceduralGeneration.Generate(width, height, scale, heightWaves, offset);
+        });
+
+        // moisture map (Calculate asynchronously)
+        Task<float[,]> moistureMapTask = Task.Run(() =>
+        {
+            return ProceduralGeneration.Generate(width, height, scale, moistureWaves, offset);
+        });
+
+        // heat map (Calculate asynchronously)
+        Task<float[,]> heatMapTask = Task.Run(() =>
+        {
+            return ProceduralGeneration.Generate(width, height, scale, heatWaves, offset);
+        });
+
+        // Wait for all calculations to complete
+        await Task.WhenAll(heightMapTask, moistureMapTask, heatMapTask);
+
+        // Retrieve the generated maps
+        heightMap = heightMapTask.Result;
+        moistureMap = moistureMapTask.Result;
+        heatMap = heatMapTask.Result;
 
         //generate water boarder
         for (int x = -1; x < width+1; ++x)

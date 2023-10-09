@@ -19,10 +19,4 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public string worldToLoad;
-
-
-    
-
-
 }

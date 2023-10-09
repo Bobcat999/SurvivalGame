@@ -14,6 +14,6 @@ public class CreateNewWorldCommand : BaseCommand
 
     public void execute()
     {
-        WorldManager.instance.CreateNewWorld(worldName, seed);
+        WorldManager.Instance.CreateNewWorld(worldName, seed);
     }
 }

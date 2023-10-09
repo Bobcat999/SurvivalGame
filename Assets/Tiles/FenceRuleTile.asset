@@ -285,6 +285,5 @@ MonoBehaviour:
     m_NeighborPositions: []
     m_RuleTransform: 0
   alwaysConnect: 1
-  tilesToConnect:
-  - {fileID: 11400000, guid: f4946d643e20e2f41a0d2002c948c9f2, type: 2}
+  tilesToConnect: []
   checkSelf: 1

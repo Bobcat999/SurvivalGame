@@ -12,6 +12,6 @@ public class LoadWorldCommand : BaseCommand
 
     public void execute()
     {
-        WorldManager.instance.LoadWorld(worldName);
+        WorldManager.Instance.LoadWorld(worldName);
     }
 }

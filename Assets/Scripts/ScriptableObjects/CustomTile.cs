@@ -8,4 +8,5 @@ public class CustomTile : ScriptableObject
 {
     public TileBase tile;
     public string id;
+    public WorldManager.Tilemaps tilemap;
 }

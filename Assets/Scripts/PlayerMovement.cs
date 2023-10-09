@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,11 +13,44 @@ public class PlayerMovement : MonoBehaviour
 
     Vector2 movement;
 
+    private PlayerControls playerControls;
+
+
+    private void Awake()
+    {
+        Time.timeScale = 1f;
+        playerControls = new PlayerControls();
+        playerControls.UI.Menu.performed += Menu_performed;
+    }
+
+    private void Menu_performed(InputAction.CallbackContext obj)
+    {
+        if(playerControls.Player.enabled)
+        {
+            playerControls.Player.Disable();
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            playerControls.Player.Enable();
+            Time.timeScale = 1f;
+        }
+    }
+
+    private void OnEnable()
+    {
+        playerControls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        playerControls.Disable();   
+    }
+
     private void Update()
     {
         //Input
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        movement = playerControls.Player.Move.ReadValue<Vector2>();
 
         //normalize the vector
         movement = movement.normalized;

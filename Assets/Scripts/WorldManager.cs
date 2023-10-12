@@ -44,12 +44,13 @@ public class WorldManager : MonoBehaviour
 
     [SerializeField] List<Tilemap> tilemaps = new List<Tilemap>();
     public List<CustomTile> tiles = new List<CustomTile>();
+    public List<Item> items = new List<Item>();
     public Dictionary<int, Tilemap> layers = new Dictionary<int, Tilemap>();
 
     public enum Tilemaps
     {
         Ground = 10,
-        Surface = 20
+        Main = 20
     }
 
     public PlayerMovement player;
@@ -99,13 +100,26 @@ public class WorldManager : MonoBehaviour
         currentWorldName = worldName;
 
         //generate the map
-        await mapGeneration.GenerateMap(seed);
+        await mapGeneration.GenerateMapAsync(seed);
+
         //find a spawnpoint for the player
         player.transform.position = FindPlayerSpawnPos();
+
+        //setup the players inventory
+        //select a slot in the players inventory
+        GameManager.Instance.playerInventory.SetSelectedSlot(0);
+        //give player items to start with
+        foreach (Item item in GameManager.Instance.startItems)
+        {
+            GameManager.Instance.playerInventory.AddItem(item);
+        }
 
         OnCreateWorldEnded?.Invoke();
 
         //save the loaded world
+
+        SetUpWorldsDirectory();
+
         SaveWorldAs(worldName);
 
     }
@@ -182,11 +196,21 @@ public class WorldManager : MonoBehaviour
         //save the player position and stats
         worldData.playerPos = player.transform.position;
 
+        //save the player inventory and chest inventories
+        InventoryData playerInventoryData = GameManager.Instance.playerInventory.GetInventoryData();
+        worldData.playerInventory = playerInventoryData;
+        //save the chests
+        foreach(ChestInventory chest in GameManager.Instance.chestInventories)
+        {
+            ChestInventoryData data = new ChestInventoryData();
+            data.slots = chest.GetInventoryData().slots;
+            data.pos = layers[(int)Tilemaps.Main].WorldToCell(chest.transform.position);
+            worldData.chests.Add(data);
+        }
+
+
+        //save the file to the computer
         string json = JsonUtility.ToJson(worldData, true);
-
-
-        SetUpWorldsDirectory();
-
         File.WriteAllText(GetWorldsDirectory() + "/" + worldName + ".json", json);
 
         OnSavingEnded?.Invoke();
@@ -225,6 +249,17 @@ public class WorldManager : MonoBehaviour
 
             // Set player position
             player.transform.position = worldData.playerPos;
+
+            //load the players inventory
+            GameManager.Instance.playerInventory.LoadInventoryData(worldData.playerInventory);
+
+            //load the chests
+            foreach(ChestInventoryData data in worldData.chests)
+            {
+                ChestInventory chest = layers[(int)Tilemaps.Main].GetInstantiatedObject(data.pos).GetComponent<ChestInventory>();
+                GameManager.Instance.SetupChest(chest);
+                chest.LoadInventoryData(data);
+            }
         }
         else
         {
@@ -242,12 +277,19 @@ public class WorldManager : MonoBehaviour
         }
     }
 
+    public Item GetItemFromItemId(string id)
+    {
+        return items.Find(i => i.id == id);
+    }
+
 }
 
 [System.Serializable]
 public class WorldData
 {
     public Vector3 playerPos = new Vector3();
+    public InventoryData playerInventory;
+    public List<ChestInventoryData> chests = new List<ChestInventoryData>();
     public List<LayerData> layers = new List<LayerData>();
 }
 
@@ -262,5 +304,30 @@ public class LayerData
     public LayerData(int id)
     {
         layerId = id;
+    }
+}
+
+[System.Serializable]
+public class InventoryData
+{
+    public List<InventorySlotData> slots = new List<InventorySlotData>();
+}
+
+[System.Serializable]
+public class ChestInventoryData:InventoryData
+{
+    public Vector3Int pos;
+}
+
+[System.Serializable]
+public class InventorySlotData
+{
+    public string itemId;
+    public int count;
+
+    public InventorySlotData(string itemId, int count)
+    {
+        this.itemId = itemId;
+        this.count = count;
     }
 }

@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tile: {fileID: 11400000, guid: 1a85b957c61f5954186253938bd1bae5, type: 2}
   id: taiga
-  tilemap: 30
+  tilemap: 10

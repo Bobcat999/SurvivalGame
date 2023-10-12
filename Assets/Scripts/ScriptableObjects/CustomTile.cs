@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[CreateAssetMenu(fileName = "CustomTile", menuName = "CustomTile")]
+[CreateAssetMenu(fileName = "CustomTile", menuName = "ScriptableObject/CustomTile")]
 public class CustomTile : ScriptableObject
 {
     public TileBase tile;

@@ -37,11 +37,11 @@ public class MapGeneration : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GenerateMap(Random.Range(0,1000));
+            GenerateMapAsync(Random.Range(0,1000));
         }
     }
 
-    public async Task GenerateMap(int seed)
+    public async Task GenerateMapAsync(int seed)
     {
         await Task.Yield(); // Yield briefly to ensure this method is asynchronous.
 
@@ -86,9 +86,9 @@ public class MapGeneration : MonoBehaviour
         heatMap = heatMapTask.Result;
 
         //generate water boarder
-        for (int x = -1; x < width+1; ++x)
+        for (int x = -1; x < width + 1; ++x)
         {
-            for (int y = -1; y < height+1; ++y)
+            for (int y = -1; y < height + 1; ++y)
             {
                 groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), biomes[0].GetTile());
             }
@@ -100,7 +100,7 @@ public class MapGeneration : MonoBehaviour
             for (int y = 0; y < height; ++y)
             {
                 TileBase tile = GetBiome(heightMap[x, y], moistureMap[x, y], heatMap[x, y]).GetTile();
-                groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y,0), tile);
+                groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), tile);
             }
         }
 

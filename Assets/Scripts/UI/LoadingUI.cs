@@ -30,7 +30,6 @@ public class LoadingUI : MonoBehaviour
             }
             loadingText.text = text + dots;
             numDots = (numDots + 1) % 4; // Use modulo to cycle through 0, 1, 2, 3
-            Debug.Log(numDots);
             yield return new WaitForSeconds(0.5f);
         }
     }

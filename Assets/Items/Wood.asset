@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d25021fc5c437b4aa6ba7e8403f9501, type: 3}
-  m_Name: Chest
+  m_Name: Wood
   m_EditorClassIdentifier: 
-  id: chest
-  tile: {fileID: 11400000, guid: cf849862416436143b969193f09b2723, type: 2}
-  type: 0
+  id: wood
+  tile: {fileID: 0}
+  type: 3
   toolType: 1
   range: {x: 5, y: 5, z: 0}
   stackable: 1
-  image: {fileID: 3000751, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
+  image: {fileID: -238540056, guid: f570e81d8421039469485b23ebe56603, type: 3}

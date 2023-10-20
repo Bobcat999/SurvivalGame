@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d25021fc5c437b4aa6ba7e8403f9501, type: 3}
-  m_Name: Axe
+  m_Script: {fileID: 11500000, guid: 4f250ffe10e94aa4a991d0282abce02b, type: 3}
+  m_Name: OakTree
   m_EditorClassIdentifier: 
-  id: axe
-  tile: {fileID: 0}
-  type: 1
-  toolType: 1
-  range: {x: 5, y: 5, z: 0}
-  stackable: 0
-  image: {fileID: 21300000, guid: 7daf49ca3d928004a867f53fe1c1059a, type: 3}
+  tile: {fileID: 11400000, guid: fd68a4248b030444d89b8757fc8bff1c, type: 2}
+  id: oakTree
+  tilemap: 20

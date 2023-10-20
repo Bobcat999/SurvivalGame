@@ -15,7 +15,7 @@ MonoBehaviour:
   id: fence
   tile: {fileID: 11400000, guid: 21b77d08e0b889a45bc0ee7e30833a97, type: 2}
   type: 0
-  actionType: 1
+  toolType: 1
   range: {x: 5, y: 5, z: 0}
   stackable: 1
   image: {fileID: 1395679653, guid: c264fdfac03ae344c88f4294d279c149, type: 3}

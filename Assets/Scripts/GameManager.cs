@@ -31,7 +31,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        //select a slot in the players inventory
         playerInventory.SetSelectedSlot(0);
+        //give player items to start with
+        foreach (Item item in startItems)
+        {
+            playerInventory.AddItem(item);
+        }
+
         playerInventory.CloseInventory();
     }
 
@@ -61,7 +68,7 @@ public class GameManager : MonoBehaviour
 
         Vector3 coor = Mouse.current.position.ReadValue();
         RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(coor), Vector2.zero);
-        if (hit && hit.collider.GetComponent<ChestInventory>() != null)
+        if (!IsInventoryOpen() && hit && hit.collider.GetComponent<ChestInventory>() != null)
         {
             ChestInventory clickedChest = hit.collider.GetComponent<ChestInventory>();
             Debug.Log("hit: " + hit.collider.transform.name);
@@ -98,6 +105,17 @@ public class GameManager : MonoBehaviour
         {
             Destroy(chestInventory.inventoryRoot.gameObject);
         }
+
+        //drop chest contents on ground
+        foreach(InventorySlot slot in chestInventory.inventorySlots)
+        {
+            InventoryItem item = slot.GetComponentInChildren<InventoryItem>();
+            if(item != null)
+            {
+                GameObject loot = Instantiate(lootPrefab, chestInventory.transform.position, Quaternion.identity);
+                loot.GetComponent<Loot>().Initialize(item.item, item.count);
+            }
+        }
     }
 
     #endregion
@@ -106,15 +124,46 @@ public class GameManager : MonoBehaviour
     [Header("Inventory")]
     public PlayerInventory playerInventory;
     public Item[] startItems;
-    public void Open_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+
+    public void OpenPlayerInventoryUI()
     {
         //toggle the player inventory
-        playerInventory.ToggleInventory();
+        playerInventory.OpenInventory();
 
         //close all of the chest inventories
         foreach (ChestInventory chest in chestInventories)
         {
             chest.CloseInventory();
+        }
+    }
+
+    public void ClosePlayerInventoryUI()
+    {
+        //toggle the player inventory
+        playerInventory.CloseInventory();
+
+        //close all of the chest inventories
+        foreach (ChestInventory chest in chestInventories)
+        {
+            chest.CloseInventory();
+        }
+    }
+
+    public bool IsInventoryOpen()
+    {
+        return playerInventory.IsOpen();
+    }
+
+
+    public void Open_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        if(IsInventoryOpen())
+        {
+            ClosePlayerInventoryUI();
+        }
+        else
+        {
+            OpenPlayerInventoryUI();
         }
     }
 

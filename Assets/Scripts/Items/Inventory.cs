@@ -13,22 +13,40 @@ public class Inventory : MonoBehaviour
     public const int ITEM_STACK_COUNT = 64;
     public const int SLOTS_PER_ROW = 9;
 
-    //returns true or false depending on if the item was succesfully added to inventory
-    public bool AddItem(Item item)
+
+    //returns the amount of items that couldnt be put into the inventory
+    public int AddItem(Item item, int count = 1)
     {
+        //if the count is already 0, just return
+        if (count == 0)
+            return 0;
+
+
         //check if it can stack with any items
         if (item.stackable)
         {
-            for (int i = 0; i < inventorySlots.Length; i++)
+            for (int i = 0; i < inventorySlots.Length; i++)//list through the inventory slots
             {
                 InventorySlot slot = inventorySlots[i];
                 InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+
                 if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < ITEM_STACK_COUNT)
                 {
+                    //get the amount of space the slot has left
+                    int space = ITEM_STACK_COUNT - itemInSlot.count;
 
-                    itemInSlot.count++;
-                    itemInSlot.RefreshCount();
-                    return true;
+                    if (count <= space)//add the items to the stack if the stack has the space
+                    {
+                        itemInSlot.count += count;
+                        itemInSlot.RefreshCount();
+                        return 0;
+                    }
+                    else//make it a full stack and make a new stack of the remaining items
+                    {
+                        itemInSlot.count += space;
+                        itemInSlot.RefreshCount();
+                        return AddItem(item, count-space);
+                    }
                 }
             }
         }
@@ -38,14 +56,27 @@ public class Inventory : MonoBehaviour
         {
             InventorySlot slot = inventorySlots[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if (itemInSlot == null)
+            if (itemInSlot == null)//if there is not iem in the slot
             {
-                SpawnNewItem(item, slot);
-                return true;
+                if (item.stackable && count <= ITEM_STACK_COUNT)
+                {
+                    SpawnNewItem(item, slot).count = count;
+                    return 0;
+                }
+                else if (item.stackable && count > ITEM_STACK_COUNT)
+                {
+                    SpawnNewItem(item, slot).count = ITEM_STACK_COUNT;
+                    return AddItem(item, count - ITEM_STACK_COUNT);
+                }
+                else
+                {
+                    SpawnNewItem(item, slot);
+                    return AddItem(item, count - 1);
+                }
             }
         }
         //failed to add to inventory
-        return false;
+        return count;
     }
 
 
@@ -72,10 +103,8 @@ public class Inventory : MonoBehaviour
             if (item == null)
             {
                 playerInventoryData.slots.Add(new InventorySlotData("", 0));
-                Debug.Log("Null Item");
                 continue;
             }
-            Debug.Log("Added item: " +  item.item.id + " count " + item.count);
             playerInventoryData.slots.Add(new InventorySlotData(item.item.id, item.count));
         }
         return playerInventoryData;
@@ -146,5 +175,10 @@ public class Inventory : MonoBehaviour
     public void CloseInventory()
     {
         inventoryRoot.gameObject.SetActive(false);
+    }
+
+    public bool IsOpen()
+    {
+        return inventoryRoot.gameObject.activeSelf;
     }
 }

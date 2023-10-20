@@ -12,7 +12,7 @@ public class Item : ScriptableObject
     [Header("Only Gameplay")]
     public TileBase tile;
     public ItemType type;
-    public ActionType actionType;
+    public ToolType toolType;
     public Vector3Int range = new Vector3Int(5, 5, 0);
 
     [Header("Only UI")]
@@ -28,11 +28,13 @@ public enum ItemType
 {
     Block,
     Tool,
-    Weapon
+    Weapon,
+    Item
 }
 
-public enum ActionType
+public enum ToolType
 {
-    Mine,
-    Chop,
+    Pickaxe,
+    Axe,
+    Shovel
 }

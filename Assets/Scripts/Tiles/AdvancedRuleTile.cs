@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
 
-[CreateAssetMenu(menuName = "VinTools/Custom Tiles/Advanced Rule Tile")]
+[CreateAssetMenu(menuName = "CustomTiles/Advanced Rule Tile")]
 public class AdvancedRuleTile: RuleTile<AdvancedRuleTile.Neighbor> {
     [Header("Advanced Tile")]
     [Tooltip("If enabled, the tile will connect to these tiles too when the mode is set to \"This\"")]

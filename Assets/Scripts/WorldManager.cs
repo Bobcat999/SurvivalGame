@@ -111,7 +111,7 @@ public class WorldManager : MonoBehaviour
         //give player items to start with
         foreach (Item item in GameManager.Instance.startItems)
         {
-            GameManager.Instance.playerInventory.AddItem(item);
+            GameManager.Instance.playerInventory.AddItem(item, 1);
         }
 
         OnCreateWorldEnded?.Invoke();

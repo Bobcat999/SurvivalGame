@@ -288,3 +288,5 @@ MonoBehaviour:
   tilesToConnect: []
   checkSelf: 1
   item: {fileID: 11400000, guid: ecf88c8f87686794582e8be29451d54c, type: 2}
+  maxDropAmount: 100
+  minDropAmount: 1

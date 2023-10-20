@@ -9,11 +9,13 @@ public class Loot : MonoBehaviour
     [SerializeField] private float moveSpeed;
 
     private Item item;
+    private int count;
 
-    public void Initialize(Item item)
+    public void Initialize(Item item, int count)
     {
         this.item = item;
         sr.sprite = item.image;
+        this.count = count;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -21,9 +23,9 @@ public class Loot : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             //add item to player inventory
-            bool canAdd = GameManager.Instance.playerInventory.AddItem(item);
+            int itemsNotAdded = GameManager.Instance.playerInventory.AddItem(item, count);
 
-            if (canAdd)
+            if (itemsNotAdded == 0)
             {
                 StartCoroutine(MoveAndCollect(other.transform));
             }

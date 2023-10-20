@@ -9,13 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d25021fc5c437b4aa6ba7e8403f9501, type: 3}
-  m_Name: Axe
+  m_Script: {fileID: 11500000, guid: bf375d18dc38b90439be44330f20aa4a, type: 3}
+  m_Name: CherryTree
   m_EditorClassIdentifier: 
-  id: axe
-  tile: {fileID: 0}
-  type: 1
-  toolType: 1
-  range: {x: 5, y: 5, z: 0}
-  stackable: 0
-  image: {fileID: 21300000, guid: 7daf49ca3d928004a867f53fe1c1059a, type: 3}
+  groundTile: {fileID: 11400000, guid: c71cd48ef25bc994eb568fffd637235f, type: 2}
+  minHeight: 0.3
+  minMoisture: 0.5
+  minHeat: 0.6

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-[CreateAssetMenu(menuName = "Custom Tiles/Biome Changing Tile")]
+[CreateAssetMenu(menuName = "CustomTiles/Biome Changing Tile")]
 public class BiomeChangingTile : Tile
 {
     public override void RefreshTile(Vector3Int position, ITilemap tilemap)

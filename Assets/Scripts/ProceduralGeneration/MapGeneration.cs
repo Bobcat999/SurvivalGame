@@ -6,9 +6,10 @@ using UnityEngine.Tilemaps;
 public class MapGeneration : MonoBehaviour
 {
 
-    public BiomePreset[] biomes;
+    public BiomePreset[] groundBiomes;
+    public BiomePreset[] treeBiomes;
     public Tilemap groundMap;
-    public Tilemap surfaceMap;
+    public Tilemap mainMap;
 
     [Header("Dimensions")]
     public int width = 50;
@@ -45,7 +46,7 @@ public class MapGeneration : MonoBehaviour
     {
         await Task.Yield(); // Yield briefly to ensure this method is asynchronous.
 
-        // Initialize seeds
+        // GETS ALL OF THE SEEDS
         foreach (Wave wave in heightWaves)
         {
             wave.seed = seed * heightWaveOffest;
@@ -59,6 +60,7 @@ public class MapGeneration : MonoBehaviour
             wave.seed = seed * heatWaveOffest;
         }
 
+        //CALCULATES ALL OF THE MAPS
         // height map (Calculate asynchronously)
         Task<float[,]> heightMapTask = Task.Run(() =>
         {
@@ -90,25 +92,38 @@ public class MapGeneration : MonoBehaviour
         {
             for (int y = -1; y < height + 1; ++y)
             {
-                groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), biomes[0].GetTile());
+                groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), groundBiomes[0].GetTile());
             }
         }
 
-        //generate map
+        //generate ground
         for (int x = 0; x < width; ++x)
         {
             for (int y = 0; y < height; ++y)
             {
-                TileBase tile = GetBiome(heightMap[x, y], moistureMap[x, y], heatMap[x, y]).GetTile();
+                TileBase tile = GetBiome(heightMap[x, y], moistureMap[x, y], heatMap[x, y], groundBiomes).GetTile();
                 groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), tile);
             }
         }
 
         //generate surface things
-        surfaceMap.ClearAllTiles();
+        mainMap.ClearAllTiles();
+
+        //generate trees
+        for (int x = 0; x < width; ++x)
+        {
+            for (int y = 0; y < height; ++y)
+            {
+                if (groundMap.GetTile(new Vector3Int(x, y, 0)) != groundBiomes[0].GetTile())
+                {
+                    TileBase tile = GetBiome(heightMap[x, y], moistureMap[x, y], heatMap[x, y], treeBiomes).GetTile();
+                    mainMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), tile);
+                }
+            }
+        }
     }
 
-    BiomePreset GetBiome(float height, float moisture, float heat)
+    BiomePreset GetBiome(float height, float moisture, float heat, BiomePreset[] biomes)
     {
         List<BiomeTempData> biomeTemp = new List<BiomeTempData>();
         foreach (BiomePreset biome in biomes)

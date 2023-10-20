@@ -36,7 +36,8 @@ public class BuildingSystem : MonoBehaviour
             tempTilemap.SetTile(highlightedTilePos, null);
         }
 
-        if (Mouse.current.leftButton.isPressed)
+        //building and breaking
+        if (!GameManager.Instance.IsInventoryOpen() && Mouse.current.leftButton.isPressed)
         {
             if (highlighted)
             {
@@ -119,7 +120,7 @@ public class BuildingSystem : MonoBehaviour
         {
             if (tile)
             {
-                if (tile.item.actionType == currentItem.actionType)
+                if (tile.item.toolType == currentItem.toolType)
                 {
                     return true;
                 }
@@ -152,7 +153,7 @@ public class BuildingSystem : MonoBehaviour
 
         Vector3 pos = mainTilemap.GetCellCenterWorld(position);
         GameObject loot = Instantiate(lootPrafab, pos, Quaternion.identity);
-        loot.GetComponent<Loot>().Initialize(tile.item);
+        loot.GetComponent<Loot>().Initialize(tile.item, tile.dropAmount);
 
     }
 }

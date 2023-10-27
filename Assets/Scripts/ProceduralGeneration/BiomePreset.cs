@@ -11,14 +11,15 @@ public class BiomePreset : ScriptableObject
     public float minHeight;
     public float minMoisture;
     public float minHeat;
+    public float minVegetation;
 
     public TileBase GetTile()
     {
         return groundTile;
     }
 
-    public bool MatchCondition(float height, float moisture, float heat)
+    public bool MatchCondition(float height, float moisture, float heat, float vegetation)
     {
-        return height >= minHeight && moisture >= minMoisture && heat >= minHeat;
+        return height >= minHeight && moisture >= minMoisture && heat >= minHeat && vegetation >= minVegetation;
     }
 }

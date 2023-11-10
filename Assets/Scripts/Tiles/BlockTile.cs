@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "CustomTiles/BlockTile")]
-public class BlockTile : AdvancedRuleTile
+public class BlockTile : GameTile
 {
     public Item item;
+
+    public BreakType breakType;
 
     [SerializeField] int minDropAmount = 1;
     [SerializeField] int maxDropAmount = 1;
@@ -14,4 +16,6 @@ public class BlockTile : AdvancedRuleTile
 
 
 }
+
+public enum BreakType { Pickaxe, Axe, Sword, Unbreakable}
 

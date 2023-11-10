@@ -287,6 +287,9 @@ MonoBehaviour:
   alwaysConnect: 1
   tilesToConnect: []
   checkSelf: 1
+  id: fence
+  tilemap: 20
   item: {fileID: 11400000, guid: ecf88c8f87686794582e8be29451d54c, type: 2}
-  maxDropAmount: 100
+  breakType: 1
   minDropAmount: 1
+  maxDropAmount: 100

@@ -16,4 +16,4 @@ MonoBehaviour:
   minHeight: 0.3
   minMoisture: 0.4
   minHeat: 0.5
-  minVegetation: 0.4
+  minVegetation: 0.5

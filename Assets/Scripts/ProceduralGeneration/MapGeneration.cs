@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -107,7 +107,10 @@ public class MapGeneration : MonoBehaviour
         {
             for (int y = -1; y < height + 1; ++y)
             {
-                groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), groundBiomes[0].GetTile());
+                if ( x <= width && x > 0 && y <= height && y > 0)
+                {
+                    groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), groundBiomes[0].GetTile());
+                }
             }
         }
 
@@ -116,7 +119,7 @@ public class MapGeneration : MonoBehaviour
         {
             for (int y = 0; y < height; ++y)
             {
-                TileBase tile = GetBiome(heightMap[x, y], moistureMap[x, y], heatMap[x, y], vegetationMap[x,y], groundBiomes).GetTile();
+                TileBase tile = GetBiome(heightMap[x, y], moistureMap[x, y], heatMap[x, y], vegetationMap[x, y], groundBiomes).GetTile();
                 groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), tile);
             }
         }
@@ -161,10 +164,14 @@ public class MapGeneration : MonoBehaviour
             }
             else
             {
-                if (biome.GetDiffValue(height, moisture, heat, vegetation) < curVal)
+                float diffVal = biome.GetDiffValue(height, moisture, heat, vegetation);
+                if (diffVal < curVal)
                 {
                     biomeToReturn = biome.biome;
-                    curVal = biome.GetDiffValue(height, moisture, heat, vegetation);
+                    curVal = diffVal;
+                }else if( diffVal == curVal)
+                {
+                    biomeToReturn = (Random.Range(0f, 1f) > .5f)?biome.biome:biomeToReturn;
                 }
             }
         }

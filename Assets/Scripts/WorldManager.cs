@@ -43,7 +43,7 @@ public class WorldManager : MonoBehaviour
 
 
     [SerializeField] List<Tilemap> tilemaps = new List<Tilemap>();
-    public List<CustomTile> tiles = new List<CustomTile>();
+    public List<GameTile> tiles = new List<GameTile>();
     public List<Item> items = new List<Item>();
     public Dictionary<int, Tilemap> layers = new Dictionary<int, Tilemap>();
 
@@ -127,7 +127,7 @@ public class WorldManager : MonoBehaviour
     public Vector3 FindPlayerSpawnPos()
     {
         Tilemap groundMap = layers[(int)Tilemaps.Ground];
-        TileBase water = tiles.Find(t => t.id == "water").tile;
+        TileBase water = tiles.Find(t => t.id == "water");
 
         if (groundMap.GetTile(Vector3Int.zero) != water)
         {
@@ -179,13 +179,11 @@ public class WorldManager : MonoBehaviour
             {
                 for (int y = bounds.min.y; y < bounds.max.y; y++)
                 {
-                    TileBase temp = tilemap.GetTile(new Vector3Int(x, y, 0));
-
-                    CustomTile tempTile = tiles.Find(t => t.tile == temp);
+                    GameTile temp = tilemap.GetTile<GameTile>(new Vector3Int(x, y, 0));
 
                     if (temp != null)
                     {
-                        layerData.tiles.Add(tempTile.id);
+                        layerData.tiles.Add(temp.id);
                         layerData.posesX.Add(x);
                         layerData.posesY.Add(y);
                     }
@@ -238,7 +236,7 @@ public class WorldManager : MonoBehaviour
 
                     for (int i = 0; i < layerData.tiles.Count; i++)
                     {
-                        TileBase tile = tiles.Find(t => t.id == layerData.tiles[i]).tile;
+                        TileBase tile = tiles.Find(t => t.id == layerData.tiles[i]);
                         if (tile)
                         {
                             tilemap.SetTile(new Vector3Int(layerData.posesX[i], layerData.posesY[i], 0), tile);

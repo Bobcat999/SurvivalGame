@@ -278,3 +278,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1a85b957c61f5954186253938bd1bae5, type: 2}
   - {fileID: 11400000, guid: 37b63a4d6b3315c42a5a90e8c31459c2, type: 2}
   checkSelf: 1
+  id: desert
+  tilemap: 10

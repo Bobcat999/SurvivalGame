@@ -3,7 +3,7 @@ using UnityEngine.Tilemaps;
 using System.Linq;
 
 [CreateAssetMenu(menuName = "CustomTiles/Advanced Rule Tile")]
-public class AdvancedRuleTile: RuleTile<AdvancedRuleTile.Neighbor> {
+public class GameTile: RuleTile<GameTile.Neighbor> {
     [Header("Advanced Tile")]
     [Tooltip("If enabled, the tile will connect to these tiles too when the mode is set to \"This\"")]
     public bool alwaysConnect;
@@ -12,6 +12,10 @@ public class AdvancedRuleTile: RuleTile<AdvancedRuleTile.Neighbor> {
     [Space]
     [Tooltip("Check itseft when the mode is set to \"any\"")]
     public bool checkSelf = true;
+
+    [Header("Serialization")]
+    public string id;
+    public WorldManager.Tilemaps tilemap;
 
     public class Neighbor : RuleTile.TilingRule.Neighbor {
         public const int Any = 3;

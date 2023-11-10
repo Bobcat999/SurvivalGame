@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
+  m_Script: {fileID: 11500000, guid: 946062a9cdeefa14cb19773dbb35f10e, type: 3}
   m_Name: WaterRuleTile
   m_EditorClassIdentifier: 
   m_DefaultSprite: {fileID: 380263405, guid: fc3ebdcba2da1bc4db6a304ca41c9c8d, type: 3}
@@ -29,3 +29,8 @@ MonoBehaviour:
     m_Neighbors: 
     m_NeighborPositions: []
     m_RuleTransform: 0
+  alwaysConnect: 0
+  tilesToConnect: []
+  checkSelf: 1
+  id: water
+  tilemap: 10

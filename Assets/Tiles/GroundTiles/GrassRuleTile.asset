@@ -278,3 +278,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1a85b957c61f5954186253938bd1bae5, type: 2}
   - {fileID: 11400000, guid: 9ff156bd67a23074f961faf877ddae18, type: 2}
   checkSelf: 1
+  id: forest
+  tilemap: 10

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CherryTree
   m_EditorClassIdentifier: 
   groundTile: {fileID: 11400000, guid: c71cd48ef25bc994eb568fffd637235f, type: 2}
-  minHeight: 0.3
+  minHeight: 0.2
   minMoisture: 0.5
-  minHeat: 0.6
+  minHeat: 0.5
   minVegetation: 0.5

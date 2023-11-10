@@ -15,5 +15,5 @@ MonoBehaviour:
   groundTile: {fileID: 11400000, guid: 9739114ccff4fc7438ec018e6de4ec23, type: 2}
   minHeight: 0.3
   minMoisture: 0.5
-  minHeat: 0.3
-  minVegetation: 0.4
+  minHeat: 0.4
+  minVegetation: 0.5

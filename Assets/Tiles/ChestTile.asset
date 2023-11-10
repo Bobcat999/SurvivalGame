@@ -19,4 +19,9 @@ MonoBehaviour:
   alwaysConnect: 0
   tilesToConnect: []
   checkSelf: 1
+  id: chest
+  tilemap: 20
   item: {fileID: 11400000, guid: c0f2ade7c5edd174fa1ca479091c4401, type: 2}
+  breakType: 1
+  minDropAmount: 1
+  maxDropAmount: 1

@@ -12,7 +12,8 @@ public class Item : ScriptableObject
     [Header("Only Gameplay")]
     public TileBase tile;
     public ItemType type;
-    public ToolType toolType;
+    [Tooltip("Just for tools that can break things")]
+    public BreakType toolType;
     public Vector3Int range = new Vector3Int(5, 5, 0);
 
     [Header("Only UI")]
@@ -30,11 +31,4 @@ public enum ItemType
     Tool,
     Weapon,
     Item
-}
-
-public enum ToolType
-{
-    Pickaxe,
-    Axe,
-    Shovel
 }

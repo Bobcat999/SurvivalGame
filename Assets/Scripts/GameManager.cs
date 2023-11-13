@@ -123,12 +123,18 @@ public class GameManager : MonoBehaviour
     #region Inventory
     [Header("Inventory")]
     public PlayerInventory playerInventory;
+    public GameObject[] UIPanels;
     public Item[] startItems;
 
     public void OpenPlayerInventoryUI()
     {
         //toggle the player inventory
         playerInventory.OpenInventory();
+
+        foreach(GameObject obj in UIPanels)
+        {
+            obj.SetActive(true);
+        }
 
         //close all of the chest inventories
         foreach (ChestInventory chest in chestInventories)
@@ -141,6 +147,11 @@ public class GameManager : MonoBehaviour
     {
         //toggle the player inventory
         playerInventory.CloseInventory();
+
+        foreach (GameObject obj in UIPanels)
+        {
+            obj.SetActive(false);
+        }
 
         //close all of the chest inventories
         foreach (ChestInventory chest in chestInventories)

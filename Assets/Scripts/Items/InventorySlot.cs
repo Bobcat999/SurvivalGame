@@ -34,5 +34,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             transform.GetChild(0).SetParent(inventoryItem.parentAfterDrag);
         }
         inventoryItem.parentAfterDrag = transform;
+        //notify the inventory
+        Inventory.InventoryChanged();
     }
 }

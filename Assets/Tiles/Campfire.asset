@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27ac73e4a43c0cb40997fc250b73358a, type: 3}
+  m_Name: Campfire
+  m_EditorClassIdentifier: 
+  m_DefaultSprite: {fileID: 411651881, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
+  m_DefaultGameObject: {fileID: 0}
+  m_DefaultColliderType: 1
+  m_TilingRules:
+  - m_Id: 0
+    m_Sprites:
+    - {fileID: 411651881, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
+    - {fileID: -814701717, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
+    - {fileID: -1790920966, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
+    - {fileID: 161304668, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
+    m_GameObject: {fileID: 0}
+    m_MinAnimationSpeed: 3
+    m_MaxAnimationSpeed: 3
+    m_PerlinScale: 0.5
+    m_Output: 2
+    m_ColliderType: 1
+    m_RandomTransform: 0
+    m_Neighbors: 
+    m_NeighborPositions:
+    - {x: -1, y: 1, z: 0}
+    - {x: 0, y: 1, z: 0}
+    - {x: 1, y: 1, z: 0}
+    - {x: -1, y: 0, z: 0}
+    - {x: 1, y: 0, z: 0}
+    - {x: -1, y: -1, z: 0}
+    - {x: 0, y: -1, z: 0}
+    - {x: 1, y: -1, z: 0}
+    m_RuleTransform: 0
+  alwaysConnect: 0
+  tilesToConnect: []
+  checkSelf: 1
+  id: campfire
+  tilemap: 20
+  item: {fileID: 11400000, guid: aa33906a1d3beb847b254fe9c029a7ea, type: 2}
+  breakType: 1
+  minDropAmount: 4
+  maxDropAmount: 5

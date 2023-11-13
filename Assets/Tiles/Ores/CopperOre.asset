@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 27ac73e4a43c0cb40997fc250b73358a, type: 3}
-  m_Name: FallTreeRuleTile
+  m_Name: CopperOre
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 1341873412, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
+  m_DefaultSprite: {fileID: 1615735243, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []
   alwaysConnect: 0
   tilesToConnect: []
   checkSelf: 1
-  id: fall-tree
-  tilemap: 0
-  item: {fileID: 11400000, guid: aa33906a1d3beb847b254fe9c029a7ea, type: 2}
-  breakType: 1
-  minDropAmount: 1
-  maxDropAmount: 1
+  id: copper-ore
+  tilemap: 20
+  item: {fileID: 11400000, guid: 16874a11549b60f4aa87553c9320eec5, type: 2}
+  breakType: 0
+  minDropAmount: 2
+  maxDropAmount: 3

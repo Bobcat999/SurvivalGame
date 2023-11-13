@@ -120,7 +120,7 @@ public class BuildingSystem : MonoBehaviour
         {
             if (tile)
             {
-                if (tile.breakType == currentItem.toolType)
+                if (tile.breakType == currentItem.breakingType)
                 {
                     return true;
                 }

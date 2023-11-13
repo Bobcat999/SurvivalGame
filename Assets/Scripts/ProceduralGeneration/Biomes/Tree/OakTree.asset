@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: OakTree
   m_EditorClassIdentifier: 
   groundTile: {fileID: 11400000, guid: fd68a4248b030444d89b8757fc8bff1c, type: 2}
-  minHeight: 0.3
+  minHeight: 0.2
   minMoisture: 0.4
   minHeat: 0.5
   minVegetation: 0.5

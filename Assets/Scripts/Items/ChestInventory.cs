@@ -13,10 +13,12 @@ public class ChestInventory : Inventory
         GameManager.Instance.SetupChest(this);
     }
 
-
     //remove the chest
-    private void OnDestroy()
+    public void OnDestroy()
     {
-        GameManager.Instance.RemoveChest(this);
+        if (GameManager.Instance.gameObject != null)
+        {
+            GameManager.Instance.RemoveChest(this);
+        }
     }
 }

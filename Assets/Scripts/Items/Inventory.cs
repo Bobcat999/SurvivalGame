@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,20 @@ public class Inventory : MonoBehaviour
     public const int SLOTS_PER_ROW = 9;
 
 
+    //events
+    public static event Action OnInventoryChange;
+    public static void InventoryChanged()
+    {
+        OnInventoryChange?.Invoke();
+    }
+
+
     //returns the amount of items that couldnt be put into the inventory
     public int AddItem(Item item, int count = 1)
     {
+        //tell everything that we changed the inventory
+        Inventory.OnInventoryChange?.Invoke();
+
         //if the count is already 0, just return
         if (count == 0)
             return 0;
@@ -76,6 +88,40 @@ public class Inventory : MonoBehaviour
             }
         }
         //failed to add to inventory
+        return count;
+    }
+
+    //returns the amount of items that fialed to be put into the inventory
+    public int RemoveItem(Item item, int count = 1)
+    {
+        //tell everything that we changed the inventory
+        Inventory.OnInventoryChange?.Invoke();
+
+        //if the count is already 0, just return
+        if (count == 0)
+            return 0;
+
+        //find any existing stacks
+        foreach(InventorySlot slot in inventorySlots)
+        {
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            if(itemInSlot != null && itemInSlot.item == item)
+            {
+                if(itemInSlot.count > count)//if its less than the stack just remove it from there and return
+                {
+                    itemInSlot.count -= count;
+                    itemInSlot.RefreshCount();
+                    return 0;
+                }
+                else//otherwhise delete that stack and remove the remaining
+                {
+                    count -= itemInSlot.count;
+                    Destroy(itemInSlot.gameObject);
+                    return RemoveItem(item, count);
+                }
+            }
+        }
+
         return count;
     }
 

@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f250ffe10e94aa4a991d0282abce02b, type: 3}
-  m_Name: CherryTree
+  m_Script: {fileID: 11500000, guid: 1d25021fc5c437b4aa6ba7e8403f9501, type: 3}
+  m_Name: GoldOre
   m_EditorClassIdentifier: 
-  tile: {fileID: 11400000, guid: c71cd48ef25bc994eb568fffd637235f, type: 2}
-  id: cherryTree
-  tilemap: 20
+  id: gold-ore
+  type: 3
+  stackable: 1
+  image: {fileID: -1947864499, guid: 7fa6ea5d92bdae44dbdc5cde048d816d, type: 3}
+  tile: {fileID: 0}
+  range: {x: 5, y: 5, z: 0}
+  breakingType: 0

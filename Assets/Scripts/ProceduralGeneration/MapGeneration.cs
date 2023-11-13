@@ -15,7 +15,7 @@ public class MapGeneration : MonoBehaviour
     public int width = 50;
     public int height = 50;
     public float scale = 1.0f;
-    public Vector2 offset;
+    public Vector2Int offset;
 
     [Header("Seed")]
     public float seed;
@@ -36,6 +36,10 @@ public class MapGeneration : MonoBehaviour
     public Wave[] vegetationWaves;
     public float vegetationWaveOffset;
     private float[,] vegetationMap;
+
+
+    [Header("Recourses")]
+    public RecourseGen[] recourceList;
 
 
     private async void Update()
@@ -102,6 +106,10 @@ public class MapGeneration : MonoBehaviour
         heatMap = heatMapTask.Result;
         vegetationMap = vegetationMapTask.Result;
 
+        //list of blocks and positions;
+
+
+
         //generate water boarder
         for (int x = -1; x < width + 1; ++x)
         {
@@ -123,6 +131,7 @@ public class MapGeneration : MonoBehaviour
                 groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), tile);
             }
         }
+
         //generate surface things
 
         mainMap.ClearAllTiles();
@@ -136,8 +145,25 @@ public class MapGeneration : MonoBehaviour
                 if (groundTile != null && groundTile != groundBiomes[0].GetTile())
                 {
                     TileBase tile = GetBiome(heightMap[x, y], moistureMap[x, y], heatMap[x, y], vegetationMap[x,y], treeBiomes).GetTile();
-                    mainMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), tile);
+                    mainMap.SetTile(new Vector3Int(x + offset.x, y + offset.y, 0), tile);
                 }
+            }
+        }
+
+        //generate recouses
+        foreach(RecourseGen recourse in recourceList)
+        {
+            for (int i = 0; i < recourse.numGens; i++)
+            {
+                int x;
+                int y;
+                do
+                {
+                    x = Random.Range(0, width);
+                    y = Random.Range(0, height);
+                } while (groundMap.GetTile(new Vector3Int(x + offset.x, y + offset.y, 0)) == groundBiomes[0].GetTile());
+
+                mainMap.SetTile(new Vector3Int(x + offset.x, y + offset.y, 0), recourse.tile);
             }
         }
     }
@@ -193,4 +219,13 @@ public class BiomeTempData
     {
         return (height - biome.minHeight) + (moisture - biome.minMoisture) + (heat - biome.minHeat) + (vegetation - biome.minVegetation);
     }
+}
+
+
+[System.Serializable]
+public class RecourseGen
+{
+    public BlockTile tile;
+    public int numGens;
+
 }

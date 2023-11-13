@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f250ffe10e94aa4a991d0282abce02b, type: 3}
-  m_Name: DesertGround
+  m_Script: {fileID: 11500000, guid: 1d25021fc5c437b4aa6ba7e8403f9501, type: 3}
+  m_Name: CopperOre
   m_EditorClassIdentifier: 
-  tile: {fileID: 11400000, guid: 9ff156bd67a23074f961faf877ddae18, type: 2}
-  id: desert
-  tilemap: 10
+  id: copper-ore
+  type: 3
+  stackable: 1
+  image: {fileID: -567475808, guid: 7fa6ea5d92bdae44dbdc5cde048d816d, type: 3}
+  tile: {fileID: 0}
+  range: {x: 5, y: 5, z: 0}
+  breakingType: 0

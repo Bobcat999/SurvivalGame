@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71379b9df7ab2004bbae9a4894409b4b, type: 3}
-  m_Name: StonePickaxeRecipe
+  m_Name: WoodPickaxeRecipe
   m_EditorClassIdentifier: 
   ingredients:
-  - item: {fileID: 11400000, guid: aa33906a1d3beb847b254fe9c029a7ea, type: 2}
+  - item: {fileID: 11400000, guid: edc0f742a5de80a4c9a1a604f0fdc748, type: 2}
     count: 1
-  - item: {fileID: 11400000, guid: d35868aa4779de849b470b443534fd98, type: 2}
+  - item: {fileID: 11400000, guid: aa33906a1d3beb847b254fe9c029a7ea, type: 2}
     count: 3
   product:
     item: {fileID: 11400000, guid: 9bf791b47520ea84f9f12b9833c8c1ec, type: 2}

@@ -1,9 +1,11 @@
+using Assets.Scripts.Commands;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class BuildingSystem : MonoBehaviour
 {
@@ -14,45 +16,121 @@ public class BuildingSystem : MonoBehaviour
 
     [SerializeField] private GameObject lootPrafab;
 
-    [SerializeField] private TileBase water;
+    [SerializeField] private TileBase water;//nothing can be highlighted above water
 
     private Vector3Int playerPos;
     private Vector3Int highlightedTilePos;
-    private bool highlighted;
+    private bool highlighted;//to check if the item being heald's action can be preformed
+    [SerializeField] Item fistItem;
 
-    private void Update()
+    public BreakCommand currentBreakCommand;
+
+    private PlayerControls controlls;
+
+    public static BuildingSystem Instance;
+
+    private void Awake()
     {
-        Item item = GameManager.Instance.playerInventory.GetSelectedItem(false);
-
-        playerPos = mainTilemap.WorldToCell(transform.position);
-
-        if (item != null)
+        if (Instance == null)
         {
-            HighlightTile(item);
-        }
-        else if (highlighted)
-        {
-            highlighted = false;
-            tempTilemap.SetTile(highlightedTilePos, null);
-        }
-
-        //building and breaking
-        if (!GameManager.Instance.IsInventoryOpen() && Mouse.current.leftButton.isPressed)
-        {
-            if (highlighted)
-            {
-                if (item.type == ItemType.Block)
-                {
-                    Build(highlightedTilePos, item);
-                }
-                else if (item.type == ItemType.Tool)
-                {
-                    DestroyBlock(highlightedTilePos);
-                }
-            }
+            Instance = this;
         }
     }
 
+
+
+    private void Start()
+    {
+        //handle input
+        controlls = new PlayerControls();
+        controlls.Player.Enable();
+        controlls.Player.Interact.performed += Interact_performed;
+
+    }
+
+    private void OnDestroy()
+    {
+        controlls.Player.Interact.performed -= Interact_performed;
+    }
+
+    private void Interact_performed(InputAction.CallbackContext obj)
+    {
+        Item item = GetSelectedItem();
+        if (CheckPlaceCondition(mainTilemap.GetTile<BlockTile>(highlightedTilePos), item))//if you can preform an action
+        {
+            Build(highlightedTilePos, item);
+        }
+    }
+
+
+    private void StartNewBreak()
+    {
+        BlockTile tile = mainTilemap.GetTile<BlockTile>(highlightedTilePos);
+        if (CheckBreakCondition(tile))
+        {
+            currentBreakCommand = new BreakCommand(GetSelectedItem(), tile, highlightedTilePos);
+        }
+
+    }
+
+    private Item GetSelectedItem()
+    {
+        Item item = GameManager.Instance.playerInventory.GetSelectedItem(false);//get the current item without using it
+        if (item == null)
+            item = fistItem;
+        return item;
+    }
+
+    private void EndCurrentBreak()
+    {
+        currentBreakCommand = null;
+    }
+
+    private void Update()
+    {
+        if (!IsMenuOpen())
+        {
+
+
+            playerPos = mainTilemap.WorldToCell(transform.position);//save the player position
+
+            //LOGIC TO CHECK IF WE CAN PREFORM AN ACTION
+
+            HighlightTile(GetSelectedItem());
+        }
+
+        //start or end any Break commands
+        if (currentBreakCommand != null &&
+            (!highlighted
+            || !controlls.Player.Mine.IsPressed()
+            || currentBreakCommand.tilePos != highlightedTilePos
+            || GetSelectedItem() != currentBreakCommand.tool))//END THE COMMAND
+        {
+            EndCurrentBreak();
+        }
+
+        if (currentBreakCommand == null && controlls.Player.Mine.IsPressed())//START A NEW COMMAND
+        {
+            StartNewBreak();
+        }
+
+        //CHECK IF DONE BREAKING
+        if (currentBreakCommand != null && currentBreakCommand.IsFinished())
+        {
+            DestroyBlock(highlightedTilePos, currentBreakCommand.dropContens);
+            EndCurrentBreak();
+        }
+    }
+
+    private bool IsMenuOpen()
+    {
+        return GameManager.Instance.IsInventoryOpen();
+    }
+
+    public bool IsBreaking()
+    {
+        return currentBreakCommand != null;
+    }
 
     private Vector3Int GetMouseOnGridPos()
     {
@@ -67,29 +145,25 @@ public class BuildingSystem : MonoBehaviour
 
     private void HighlightTile(Item currentItem)
     {
-        Vector3Int mouseGridPos = GetMouseOnGridPos();
+        Vector3Int mouseGridPos = GetMouseOnGridPos();//gets the mouse position
 
-        tempTilemap.SetTile(highlightedTilePos, null);
+        tempTilemap.SetTile(highlightedTilePos, null);//sets the old highlight to null
 
-        if (InRange(playerPos, mouseGridPos, currentItem.range))
+        //make sure its in range, the tile underneath isnt water and check if the conditions are right for it to get highlighted
+        if (InRange(playerPos, mouseGridPos, currentItem.range) && groundTilemap.GetTile(mouseGridPos) != water && CheckHighlightCondition(mainTilemap.GetTile<BlockTile>(mouseGridPos), currentItem))
         {
-
-            if (groundTilemap.GetTile(mouseGridPos) != water && CheckCondition(mainTilemap.GetTile<BlockTile>(mouseGridPos), currentItem))
+            //highlight the tile
+            tempTilemap.SetTile(mouseGridPos, hightlightTile);
+            if (highlightedTilePos != mouseGridPos)
             {
-                tempTilemap.SetTile(mouseGridPos, hightlightTile);
                 highlightedTilePos = mouseGridPos;
-
-                highlighted = true;
-            }
-            else
-            {
-                highlighted = false;
             }
 
+            highlighted = true;
         }
         else
         {
-            highlighted = false;
+            highlighted = false;//unhighlight
         }
 
     }
@@ -107,24 +181,41 @@ public class BuildingSystem : MonoBehaviour
         return true;
     }
 
-    private bool CheckCondition(BlockTile tile, Item currentItem)
+    private bool CheckHighlightCondition(BlockTile tile, Item currentItem)
     {
-        if (currentItem.type == ItemType.Block)
+
+        if (currentItem.type != ItemType.Block)
         {
             if (tile == null)
             {
-                return true;
+                return false;
             }
         }
-        else if (currentItem.type == ItemType.Tool)
+
+        return true;
+    }
+
+    private bool CheckPlaceCondition(BlockTile tile, Item currentItem)
+    {
+        if (!highlighted)
+            return false;
+
+        if (currentItem.type == ItemType.Block && tile == null)
         {
-            if (tile)
-            {
-                if (tile.breakType == currentItem.breakingType)
-                {
-                    return true;
-                }
-            }
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool CheckBreakCondition(BlockTile tile)
+    {
+        if (!highlighted)
+            return false;
+
+        if (tile != null)
+        {
+            return true;
         }
 
         return false;
@@ -142,18 +233,22 @@ public class BuildingSystem : MonoBehaviour
         mainTilemap.SetTile(position, itemToBuild.tile);
     }
 
-    private void DestroyBlock(Vector3Int position)
+    private void DestroyBlock(Vector3Int position, bool dropContents)
     {
         //unhighlight
         tempTilemap.SetTile(position, null);
         highlighted = false;
 
+        //set the tile to null
         BlockTile tile = mainTilemap.GetTile<BlockTile>(position);
         mainTilemap.SetTile(position, null);
 
-        Vector3 pos = mainTilemap.GetCellCenterWorld(position);
-        GameObject loot = Instantiate(lootPrafab, pos, Quaternion.identity);
-        loot.GetComponent<Loot>().Initialize(tile.item, tile.dropAmount);
+        /*if (dropContents)
+        {*/
+            //drop the loot
+            Vector3 pos = mainTilemap.GetCellCenterWorld(position);
+            GameObject loot = Instantiate(lootPrafab, pos, Quaternion.identity);
+            loot.GetComponent<Loot>().Initialize(tile.item, tile.dropAmount);
 
     }
 }

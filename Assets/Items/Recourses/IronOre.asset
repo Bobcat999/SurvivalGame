@@ -15,7 +15,8 @@ MonoBehaviour:
   id: iron-ore
   type: 3
   stackable: 1
-  image: {fileID: -552932238, guid: 7fa6ea5d92bdae44dbdc5cde048d816d, type: 3}
+  image: {fileID: -1141372561, guid: e8e135f48fa2e2c4681de19c01d4b726, type: 3}
   tile: {fileID: 0}
   range: {x: 5, y: 5, z: 0}
   breakingType: 0
+  breakingSpeed: 1

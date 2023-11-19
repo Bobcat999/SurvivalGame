@@ -8,6 +8,7 @@ public class BlockTile : GameTile
     public Item item;
 
     public BreakType breakType;
+    public float breakTime = 1f;
 
     [SerializeField] int minDropAmount = 1;
     [SerializeField] int maxDropAmount = 1;
@@ -17,5 +18,5 @@ public class BlockTile : GameTile
 
 }
 
-public enum BreakType { Pickaxe, Axe, Sword, Unbreakable}
+public enum BreakType { Pickaxe, Axe, Sword, Unbreakable, None}
 

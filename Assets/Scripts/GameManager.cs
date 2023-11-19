@@ -180,9 +180,12 @@ public class GameManager : MonoBehaviour
 
     private void Scroll_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        float scroll = obj.ReadValue<float>();
-        int numScroll = (scroll > 0) ? -1 : 1;
-        playerInventory.ChangeSelectedSlot(numScroll);
+        if (!IsInventoryOpen())
+        {
+            float scroll = obj.ReadValue<float>();
+            int numScroll = (scroll > 0) ? -1 : 1;
+            playerInventory.ChangeSelectedSlot(numScroll);
+        }
     }
     #endregion
 

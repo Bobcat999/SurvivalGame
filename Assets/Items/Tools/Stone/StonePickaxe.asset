@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d25021fc5c437b4aa6ba7e8403f9501, type: 3}
-  m_Name: Sword
+  m_Name: StonePickaxe
   m_EditorClassIdentifier: 
-  id: sword
-  type: 2
+  id: stone-pickaxe
+  type: 1
   stackable: 0
-  image: {fileID: 337278684, guid: 7fa6ea5d92bdae44dbdc5cde048d816d, type: 3}
+  image: {fileID: -1422688978, guid: e8e135f48fa2e2c4681de19c01d4b726, type: 3}
   tile: {fileID: 0}
   range: {x: 5, y: 5, z: 0}
   breakingType: 0
+  breakingSpeed: 4

@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d25021fc5c437b4aa6ba7e8403f9501, type: 3}
-  m_Name: Axe
+  m_Name: WoodSword
   m_EditorClassIdentifier: 
-  id: axe
-  type: 1
+  id: wood-sword
+  type: 2
   stackable: 0
-  image: {fileID: -896208454, guid: 7fa6ea5d92bdae44dbdc5cde048d816d, type: 3}
+  image: {fileID: 117391071, guid: e8e135f48fa2e2c4681de19c01d4b726, type: 3}
   tile: {fileID: 0}
   range: {x: 5, y: 5, z: 0}
-  breakingType: 1
+  breakingType: 0
+  breakingSpeed: 1

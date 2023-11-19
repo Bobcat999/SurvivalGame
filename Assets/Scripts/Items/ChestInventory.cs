@@ -16,7 +16,7 @@ public class ChestInventory : Inventory
     //remove the chest
     public void OnDestroy()
     {
-        if (GameManager.Instance.gameObject != null)
+        if (GameManager.Instance != null)
         {
             GameManager.Instance.RemoveChest(this);
         }

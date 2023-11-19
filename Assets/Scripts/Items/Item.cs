@@ -26,7 +26,8 @@ public class Item : ScriptableObject
     //hide in inspector
     [HideInInspector] public TileBase tile;
     [HideInInspector] public Vector3Int range = new Vector3Int(5, 5, 0);//default value
-    [HideInInspector] public BreakType breakingType;
+    [HideInInspector] public BreakType breakingType = BreakType.None;
+    [HideInInspector] public float breakingSpeed = 1f;
 
     #region Editor
 #if UNITY_EDITOR
@@ -52,6 +53,8 @@ public class Item : ScriptableObject
                 case ItemType.Tool:
                     EditorGUILayout.LabelField("Breaking Type");
                     item.breakingType = (BreakType)EditorGUILayout.EnumPopup(item.breakingType);
+                    EditorGUILayout.LabelField("Breaking Speed");
+                    item.breakingSpeed = EditorGUILayout.FloatField(item.breakingSpeed);
                     break;
                 case ItemType.Weapon:
                     break;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -55,11 +56,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    #region Chests
-    [Header("Chests")]
-    public List<ChestInventory> chestInventories = new List<ChestInventory>();
-    public Transform chestInventoryUIParent;
-    public GameObject chestInventoryUIPrefab;
+    #region Block Inventories
+    [Header("Block Inentorys")]
+    public List<BlockInventory> blockInventories = new List<BlockInventory>();
+    public Transform blockInventoryUIParent;
     public GameObject lootPrefab;
 
 
@@ -68,53 +68,41 @@ public class GameManager : MonoBehaviour
 
         Vector3 coor = Mouse.current.position.ReadValue();
         RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(coor), Vector2.zero);
-        if (!IsInventoryOpen() && hit && hit.collider.GetComponent<ChestInventory>() != null)
+        if (!IsInventoryOpen() && hit && hit.collider.GetComponent<BlockInventory>() != null)
         {
-            ChestInventory clickedChest = hit.collider.GetComponent<ChestInventory>();
-            Debug.Log("hit: " + hit.collider.transform.name);
-            //open the chest inventory and the player inventory
-            clickedChest.OpenInventory();
-            playerInventory.OpenInventory();
+            BlockInventory clickedblock = hit.collider.GetComponent<BlockInventory>();
+
+            //open the block inventory and the player inventory
+            OpenInventoryUI(clickedblock.inventoryRoot);
         }
     }
 
-    public void SetupChest(ChestInventory chestInventory)
+    public void SetupBlockInventory(BlockInventory blockInventory)
     {
-        if (chestInventories.Contains(chestInventory))
+        if (blockInventories.Contains(blockInventory))
             return;
 
-        chestInventories.Add(chestInventory);
+        blockInventories.Add(blockInventory);
 
-        //spawn chest inventory object
-        GameObject inventoryObject = Instantiate(chestInventoryUIPrefab, chestInventoryUIParent);
-        chestInventory.inventoryRoot = inventoryObject.transform;
+        //spawn block inventory object
+        GameObject inventoryObject = Instantiate(blockInventory.inventoryUIPrefab, blockInventoryUIParent);
+        blockInventory.inventoryRoot = inventoryObject.transform;
         //get the slots
         InventorySlot[] slots = inventoryObject.GetComponentsInChildren<InventorySlot>();
-        //set the chest objects slots
-        chestInventory.SetInventorySlots(slots);
-        //close the chest
-        chestInventory.CloseInventory();
+        //set the block objects slots
+        blockInventory.SetInventorySlots(slots);
+        //close the block
+        blockInventory.CloseInventory();
     }
 
-    public void RemoveChest(ChestInventory chestInventory)
+    public void RemoveBlockInventory(BlockInventory blockInventory)
     {
-        chestInventories.Remove(chestInventory);
+        blockInventories.Remove(blockInventory);
 
         //destroy the ui object
-        if (chestInventory.inventoryRoot)
+        if (blockInventory.inventoryRoot)
         {
-            Destroy(chestInventory.inventoryRoot.gameObject);
-        }
-
-        //drop chest contents on ground
-        foreach(InventorySlot slot in chestInventory.inventorySlots)
-        {
-            InventoryItem item = slot.GetComponentInChildren<InventoryItem>();
-            if(item != null)
-            {
-                GameObject loot = Instantiate(lootPrefab, chestInventory.transform.position, Quaternion.identity);
-                loot.GetComponent<Loot>().Initialize(item.item, item.count);
-            }
+            Destroy(blockInventory.inventoryRoot.gameObject);
         }
     }
 
@@ -123,41 +111,39 @@ public class GameManager : MonoBehaviour
     #region Inventory
     [Header("Inventory")]
     public PlayerInventory playerInventory;
-    public GameObject[] UIPanels;
+    public Transform craftingInventory;
     public Item[] startItems;
 
-    public void OpenPlayerInventoryUI()
+    public void OpenInventoryUI(Transform panel = null)
     {
-        //toggle the player inventory
+        CloseInventoryUI();
+        
+        if (panel == null)
+        {
+            panel = craftingInventory;
+        }
+
+        //open the player inventory
         playerInventory.OpenInventory();
 
-        foreach(GameObject obj in UIPanels)
-        {
-            obj.SetActive(true);
-        }
+        //open the other inventory
+        panel.gameObject.SetActive(true);
 
-        //close all of the chest inventories
-        foreach (ChestInventory chest in chestInventories)
-        {
-            chest.CloseInventory();
-        }
     }
 
-    public void ClosePlayerInventoryUI()
+    public void CloseInventoryUI()
     {
         //toggle the player inventory
         playerInventory.CloseInventory();
 
-        foreach (GameObject obj in UIPanels)
+        //close all of the chest inventories
+        foreach (BlockInventory blInv in blockInventories)
         {
-            obj.SetActive(false);
+            blInv.CloseInventory();
         }
 
-        //close all of the chest inventories
-        foreach (ChestInventory chest in chestInventories)
-        {
-            chest.CloseInventory();
-        }
+        craftingInventory.gameObject.SetActive(false);
+
     }
 
     public bool IsInventoryOpen()
@@ -170,11 +156,11 @@ public class GameManager : MonoBehaviour
     {
         if(IsInventoryOpen())
         {
-            ClosePlayerInventoryUI();
+            CloseInventoryUI();
         }
         else
         {
-            OpenPlayerInventoryUI();
+            OpenInventoryUI();
         }
     }
 

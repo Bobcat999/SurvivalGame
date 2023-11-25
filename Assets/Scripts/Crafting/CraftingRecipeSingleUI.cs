@@ -19,7 +19,7 @@ public class CraftingRecipeSingleUI : MonoBehaviour
     private void Awake()
     {
         craftButton.onClick.AddListener(() => {//actually do the crafting
-            if(!CraftingManager.Instance.CraftRecipe(recipe))
+            if(!RecipeManager.Instance.CraftRecipe(recipe))
                 conditionCheckNeeded = true;
             });
     }
@@ -33,7 +33,7 @@ public class CraftingRecipeSingleUI : MonoBehaviour
     {
         if (conditionCheckNeeded)
         {
-            craftButton.interactable = CraftingManager.Instance.CanCraft(recipe);
+            craftButton.interactable = RecipeManager.Instance.CanCraft(recipe);
             conditionCheckNeeded = false;
         }
     }

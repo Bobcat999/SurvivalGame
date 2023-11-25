@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Campfire
   m_EditorClassIdentifier: 
   m_DefaultSprite: {fileID: 411651881, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
-  m_DefaultGameObject: {fileID: 0}
+  m_DefaultGameObject: {fileID: 5093852767597105868, guid: fdd9b28b472076a4e984ed48bd5e6649, type: 3}
   m_DefaultColliderType: 1
   m_TilingRules:
   - m_Id: 0
@@ -22,7 +22,7 @@ MonoBehaviour:
     - {fileID: -814701717, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
     - {fileID: -1790920966, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
     - {fileID: 161304668, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
-    m_GameObject: {fileID: 0}
+    m_GameObject: {fileID: 5093852767597105868, guid: fdd9b28b472076a4e984ed48bd5e6649, type: 3}
     m_MinAnimationSpeed: 3
     m_MaxAnimationSpeed: 3
     m_PerlinScale: 0.5

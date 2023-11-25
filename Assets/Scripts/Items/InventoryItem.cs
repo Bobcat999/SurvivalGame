@@ -14,6 +14,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public Image image;
     public TextMeshProUGUI countText;
 
+    public TooltipTrigger tooltip;
+
 
     [HideInInspector] public Item item;
     [HideInInspector] public int count = 1;
@@ -29,6 +31,11 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
         item = newItem;
         image.sprite = newItem.image;
+
+        //setup the tooltip
+        tooltip.header = item.name;
+        tooltip.content = item.description;
+
         RefreshCount();
     }
 

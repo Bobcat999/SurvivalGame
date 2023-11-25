@@ -194,16 +194,16 @@ public class WorldManager : MonoBehaviour
         //save the player position and stats
         worldData.playerPos = player.transform.position;
 
-        //save the player inventory and chest inventories
+        //save the player inventory and block inventories
         InventoryData playerInventoryData = GameManager.Instance.playerInventory.GetInventoryData();
         worldData.playerInventory = playerInventoryData;
-        //save the chests
-        foreach(ChestInventory chest in GameManager.Instance.chestInventories)
+        //save the block inventories
+        foreach(BlockInventory blockInventory in GameManager.Instance.blockInventories)
         {
-            ChestInventoryData data = new ChestInventoryData();
-            data.slots = chest.GetInventoryData().slots;
-            data.pos = layers[(int)Tilemaps.Main].WorldToCell(chest.transform.position);
-            worldData.chests.Add(data);
+            BlockInventoryData data = new BlockInventoryData();
+            data.slots = blockInventory.GetInventoryData().slots;
+            data.pos = layers[(int)Tilemaps.Main].WorldToCell(blockInventory.transform.position);
+            worldData.blockInventories.Add(data);
         }
 
 
@@ -251,12 +251,12 @@ public class WorldManager : MonoBehaviour
             //load the players inventory
             GameManager.Instance.playerInventory.LoadInventoryData(worldData.playerInventory);
 
-            //load the chests
-            foreach(ChestInventoryData data in worldData.chests)
+            //load the block inventories
+            foreach(BlockInventoryData data in worldData.blockInventories)
             {
-                ChestInventory chest = layers[(int)Tilemaps.Main].GetInstantiatedObject(data.pos).GetComponent<ChestInventory>();
-                GameManager.Instance.SetupChest(chest);
-                chest.LoadInventoryData(data);
+                BlockInventory blockInventory = layers[(int)Tilemaps.Main].GetInstantiatedObject(data.pos).GetComponent<BlockInventory>();
+                GameManager.Instance.SetupBlockInventory(blockInventory);
+                blockInventory.LoadInventoryData(data);
             }
         }
         else
@@ -287,7 +287,7 @@ public class WorldData
 {
     public Vector3 playerPos = new Vector3();
     public InventoryData playerInventory;
-    public List<ChestInventoryData> chests = new List<ChestInventoryData>();
+    public List<BlockInventoryData> blockInventories = new List<BlockInventoryData>();
     public List<LayerData> layers = new List<LayerData>();
 }
 
@@ -312,7 +312,7 @@ public class InventoryData
 }
 
 [System.Serializable]
-public class ChestInventoryData:InventoryData
+public class BlockInventoryData:InventoryData
 {
     public Vector3Int pos;
 }

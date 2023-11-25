@@ -15,6 +15,11 @@ public class BlockTile : GameTile
 
     public int dropAmount {  get { return Random.Range(minDropAmount, maxDropAmount); } private set {  maxDropAmount = value; } }
 
+    public virtual void OnBlockBroken()
+    {
+
+    }
+
 
 }
 

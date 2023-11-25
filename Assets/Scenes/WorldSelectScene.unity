@@ -631,6 +631,7 @@ GameObject:
   - component: {fileID: 183717104}
   - component: {fileID: 183717103}
   - component: {fileID: 183717102}
+  - component: {fileID: 183717105}
   m_Layer: 5
   m_Name: WorldNameInputField
   m_TagString: Untagged
@@ -794,6 +795,117 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 183717100}
   m_CullTransparentMesh: 1
+--- !u!114 &183717105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183717100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2036a4663e50c044814d13cda88db3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: World Name
+  content: What you want your world to be called
+--- !u!1001 &189472263
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 362814377014961525, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_Name
+      value: TooltipCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250182984113796946, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b5963cb3e6f59da488f3609cee80010e, type: 3}
 --- !u!1 &195961623
 GameObject:
   m_ObjectHideFlags: 0
@@ -1729,6 +1841,7 @@ GameObject:
   - component: {fileID: 818516718}
   - component: {fileID: 818516717}
   - component: {fileID: 818516716}
+  - component: {fileID: 818516719}
   m_Layer: 5
   m_Name: DeleteWorldButton
   m_TagString: Untagged
@@ -1838,6 +1951,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 818516714}
   m_CullTransparentMesh: 1
+--- !u!114 &818516719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818516714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2036a4663e50c044814d13cda88db3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: Delete
+  content: Be carefull, once deleted you can't recover your world
 --- !u!1 &821408574
 GameObject:
   m_ObjectHideFlags: 0
@@ -2110,6 +2237,7 @@ GameObject:
   - component: {fileID: 925600023}
   - component: {fileID: 925600022}
   - component: {fileID: 925600021}
+  - component: {fileID: 925600024}
   m_Layer: 5
   m_Name: WorldSeedInputField
   m_TagString: Untagged
@@ -2273,6 +2401,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 925600019}
   m_CullTransparentMesh: 1
+--- !u!114 &925600024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925600019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2036a4663e50c044814d13cda88db3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: World Seed
+  content: The seed that determines the worlds generation
 --- !u!1 &927679708
 GameObject:
   m_ObjectHideFlags: 0
@@ -4159,6 +4301,7 @@ GameObject:
   - component: {fileID: 1979862108}
   - component: {fileID: 1979862107}
   - component: {fileID: 1979862106}
+  - component: {fileID: 1979862109}
   m_Layer: 5
   m_Name: WorldNameInputField
   m_TagString: Untagged
@@ -4322,6 +4465,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1979862104}
   m_CullTransparentMesh: 1
+--- !u!114 &1979862109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979862104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2036a4663e50c044814d13cda88db3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: World Name
+  content: Edit the world's name
 --- !u!1 &2017052084
 GameObject:
   m_ObjectHideFlags: 0
@@ -4714,4 +4871,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 760881426}
   - {fileID: 177073803}
+  - {fileID: 189472263}
   - {fileID: 195961626}

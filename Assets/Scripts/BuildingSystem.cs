@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
+using static Unity.Collections.AllocatorManager;
 
 public class BuildingSystem : MonoBehaviour
 {
@@ -117,7 +118,7 @@ public class BuildingSystem : MonoBehaviour
         //CHECK IF DONE BREAKING
         if (currentBreakCommand != null && currentBreakCommand.IsFinished())
         {
-            DestroyBlock(highlightedTilePos, currentBreakCommand.dropContens);
+            DestroyBlock(highlightedTilePos, currentBreakCommand.dropContents);
             EndCurrentBreak();
         }
     }
@@ -239,16 +240,26 @@ public class BuildingSystem : MonoBehaviour
         tempTilemap.SetTile(position, null);
         highlighted = false;
 
-        //set the tile to null
+
         BlockTile tile = mainTilemap.GetTile<BlockTile>(position);
+        //run anything we need on the block
+        tile.OnBlockBroken();
+
+        //if there is a block inventory, drop the loot
+        GameObject instantiatedObj = mainTilemap.GetInstantiatedObject(position);
+        if (instantiatedObj != null && instantiatedObj.GetComponent<BlockInventory>())
+        {
+            instantiatedObj.GetComponent<BlockInventory>().OnInventoryDestroyed();
+        }
+
+        //set the tile to null
         mainTilemap.SetTile(position, null);
 
-        /*if (dropContents)
-        {*/
-            //drop the loot
-            Vector3 pos = mainTilemap.GetCellCenterWorld(position);
-            GameObject loot = Instantiate(lootPrafab, pos, Quaternion.identity);
-            loot.GetComponent<Loot>().Initialize(tile.item, tile.dropAmount);
+        //drop the tile loot
+        Vector3 pos = mainTilemap.GetCellCenterWorld(position);
+        GameObject loot = Instantiate(lootPrafab, pos, Quaternion.identity);
+        loot.GetComponent<Loot>().Initialize(tile.item, tile.dropAmount);
+
 
     }
 }

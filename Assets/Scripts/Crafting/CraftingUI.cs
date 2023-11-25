@@ -26,7 +26,7 @@ public class CraftingUI : MonoBehaviour
         }
 
         //instantiate all of the recipes
-        foreach(Recipe recipe in CraftingManager.Instance.recipes)
+        foreach(Recipe recipe in RecipeManager.Instance.GetRecipiesOfType(RecipeType.Crafting))
         {
             Transform recipeTransfrom = Instantiate(recipeTemplate, recipesContainer);
             CraftingRecipeSingleUI craftingRecipeSingleUI = recipeTransfrom.GetComponent<CraftingRecipeSingleUI>();

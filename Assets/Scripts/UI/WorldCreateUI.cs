@@ -21,7 +21,16 @@ public class WorldCreateUI : MonoBehaviour
         });
         createNewWorldButton.onClick.AddListener(() =>
         {
-            WorldManager.SetLoadCommand(new CreateNewWorldCommand(worldNameInputField.text, int.Parse(worldSeedInputField.text)));
+            int seed;
+            if(!string.IsNullOrEmpty(worldSeedInputField.text))
+            {
+                seed = int.Parse(worldSeedInputField.text);
+            }
+            else
+            {
+                seed = Random.Range(0, 1000);
+            }
+            WorldManager.SetLoadCommand(new CreateNewWorldCommand(worldNameInputField.text, seed));
             Loader.Load(Loader.Scene.GameScene);
         });
 

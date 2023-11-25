@@ -17,6 +17,8 @@ public class Item : ScriptableObject
     public ItemType type;
 
     [Header("Only UI")]
+    [Multiline()]
+    public string description;
     public bool stackable = true;
 
     [Header("Both")]

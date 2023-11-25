@@ -10,7 +10,7 @@ namespace Assets.Scripts.Commands
         public Vector3Int tilePos;
         public float breakTime;//in seconds
         public float timeOfStart;
-        public bool dropContens;
+        public bool dropContents;
 
         public BreakCommand(Item tool, BlockTile tile, Vector3Int tilePos) { 
             
@@ -19,10 +19,10 @@ namespace Assets.Scripts.Commands
             this.tilePos = tilePos;
 
             timeOfStart = Time.time;
-            dropContens = tile.breakType == tool.breakingType;
+            dropContents = tile.breakType == tool.breakingType;
 
             //determine the time it should take to mine;
-            breakTime = tile.breakTime / ((dropContens)? tool.breakingSpeed : 1);
+            breakTime = tile.breakTime / ((dropContents)? tool.breakingSpeed : 1);
             
         }
 

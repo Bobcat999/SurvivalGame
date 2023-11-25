@@ -146,3 +146,4 @@ MonoBehaviour:
   inventorySlots: []
   inventoryRoot: {fileID: 0}
   inventoryItemPrefab: {fileID: 6797771614640158735, guid: dc28eaf908c2a4d4d93f5ecaeda8fb1e, type: 3}
+  inventoryUIPrefab: {fileID: 8415903850447266218, guid: fec07ca5a919421409c70952da6f5667, type: 3}

@@ -12,10 +12,10 @@ public class InventoryUI : MonoBehaviour
     private void Awake()
     {
         hideInventoryButton.onClick.AddListener(()=> {
-            GameManager.Instance.ClosePlayerInventoryUI();
+            GameManager.Instance.CloseInventoryUI();
         });
         showInventoryButton.onClick.AddListener(() => {
-            GameManager.Instance.OpenPlayerInventoryUI();
+            GameManager.Instance.OpenInventoryUI();
         });
     }
 

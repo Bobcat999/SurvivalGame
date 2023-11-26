@@ -148,7 +148,7 @@ public class Inventory : MonoBehaviour
             InventoryItem item = slot.GetComponentInChildren<InventoryItem>();
             if (item == null)
             {
-                playerInventoryData.slots.Add(new InventorySlotData("", 0));
+                playerInventoryData.slots.Add(InventorySlotData.NullSlotData());
                 continue;
             }
             playerInventoryData.slots.Add(new InventorySlotData(item.item.id, item.count));

@@ -22,13 +22,8 @@ public class Loot : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            //add item to player inventory
-            int itemsNotAdded = GameManager.Instance.playerInventory.AddItem(item, count);
+            StartCoroutine(MoveAndCollect(other.transform));
 
-            if (itemsNotAdded == 0)
-            {
-                StartCoroutine(MoveAndCollect(other.transform));
-            }
         }
     }
 
@@ -36,13 +31,24 @@ public class Loot : MonoBehaviour
     {
         Destroy(boxCollider);
 
-        while(transform.position != target.position)
+        while (transform.position != target.position)
         {
             transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
             yield return 0;
         }
 
-        Destroy(gameObject);
+        //add item to player inventory
+        int itemsNotAdded = GameManager.Instance.playerInventory.AddItem(item, count);
+
+
+        if (itemsNotAdded == 0)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            count = itemsNotAdded;
+        }
 
     }
 

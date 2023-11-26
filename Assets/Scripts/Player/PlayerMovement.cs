@@ -15,6 +15,16 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerControls playerControls;
 
+    [SerializeField] ParticleSystem dustParticle;
+
+    [Range(0, 10)]
+    [SerializeField] int occurAfterVelocity;
+
+    [Range(0, 10)]
+    [SerializeField] float dustFormationPeriod;
+
+    float counter = 0;
+
 
     private void Awake()
     {
@@ -64,6 +74,16 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
         animator.SetFloat("Speed", movement.sqrMagnitude);
+
+        //set the animation visuals
+        counter += Time.deltaTime;
+        Debug.Log(movement.magnitude);
+        if (movement.magnitude >= occurAfterVelocity && counter > dustFormationPeriod)
+        {
+            counter = 0;
+            dustParticle.Emit(1);
+            Debug.Log("Emitted");
+        }
     }
 
     private void FixedUpdate()

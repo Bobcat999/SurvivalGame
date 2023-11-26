@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class InventoryItem : MonoBehaviour //, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
 
     [Header("UI")]
@@ -47,7 +47,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     }
 
 
-    public void OnBeginDrag(PointerEventData eventData)
+    /*public void OnBeginDrag(PointerEventData eventData)
     {
         image.raycastTarget = false;
         countText.raycastTarget = false;
@@ -65,5 +65,5 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         image.raycastTarget = true;
         countText.raycastTarget = true;
         transform.SetParent(parentAfterDrag);
-    }
+    }*/
 }

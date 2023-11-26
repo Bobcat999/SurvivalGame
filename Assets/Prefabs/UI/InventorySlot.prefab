@@ -116,3 +116,4 @@ MonoBehaviour:
   image: {fileID: 4731934124446015167}
   selectedColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
   notSelectedColor: {r: 1, g: 1, b: 1, a: 1}
+  canHandPlace: 1

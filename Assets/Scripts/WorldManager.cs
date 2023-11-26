@@ -197,6 +197,10 @@ public class WorldManager : MonoBehaviour
         //save the player inventory and block inventories
         InventoryData playerInventoryData = GameManager.Instance.playerInventory.GetInventoryData();
         worldData.playerInventory = playerInventoryData;
+
+        InventorySlotData playerHandData = PlayerHandManager.Instance.GetHandData();
+        worldData.playerHand = playerHandData;
+
         //save the block inventories
         foreach(BlockInventory blockInventory in GameManager.Instance.blockInventories)
         {
@@ -251,6 +255,9 @@ public class WorldManager : MonoBehaviour
             //load the players inventory
             GameManager.Instance.playerInventory.LoadInventoryData(worldData.playerInventory);
 
+            //load the players hand
+            PlayerHandManager.Instance.LoadHandData(worldData.playerHand);
+
             //load the block inventories
             foreach(BlockInventoryData data in worldData.blockInventories)
             {
@@ -287,6 +294,7 @@ public class WorldData
 {
     public Vector3 playerPos = new Vector3();
     public InventoryData playerInventory;
+    public InventorySlotData playerHand;
     public List<BlockInventoryData> blockInventories = new List<BlockInventoryData>();
     public List<LayerData> layers = new List<LayerData>();
 }
@@ -327,5 +335,10 @@ public class InventorySlotData
     {
         this.itemId = itemId;
         this.count = count;
+    }
+
+    public static InventorySlotData NullSlotData()
+    {
+        return new InventorySlotData("", 0);
     }
 }

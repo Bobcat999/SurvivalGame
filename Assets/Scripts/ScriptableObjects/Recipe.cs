@@ -18,4 +18,4 @@ public class RecipeMaterial
     public int count;
 }
 
-public enum RecipeType { Crafting, Campfire}
+public enum RecipeType { Crafting, Smelting}

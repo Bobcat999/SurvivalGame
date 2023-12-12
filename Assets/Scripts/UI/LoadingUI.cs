@@ -14,6 +14,7 @@ public class LoadingUI : MonoBehaviour
         WorldManager.OnLoadingEnded += WorldManager_OnLoadingEnded;
         WorldManager.OnCreateWorldStarted += WorldManager_OnCreateWorldStarted;
         WorldManager.OnCreateWorldEnded += WorldManager_OnCreateWorldEnded;
+        Hide();
     }
 
     private IEnumerator AnimateText(string text)

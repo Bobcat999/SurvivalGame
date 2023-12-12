@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: stick
   type: 3
+  fuelStrength: 1
+  description: 
   stackable: 1
   image: {fileID: -2057735902, guid: e8e135f48fa2e2c4681de19c01d4b726, type: 3}
   tile: {fileID: 0}

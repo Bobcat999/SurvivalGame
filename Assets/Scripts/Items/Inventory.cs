@@ -91,6 +91,61 @@ public class Inventory : MonoBehaviour
         return count;
     }
 
+    public int AddItem(InventorySlot slot, Item item, int count = 1)
+    {
+        //tell everything that we changed the inventory
+        Inventory.OnInventoryChange?.Invoke();
+
+        //if the count is already 0, just return
+        if (count == 0)
+            return 0;
+
+        InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+
+        //if slot's emplty
+        if (itemInSlot == null)
+        {
+            if (item.stackable && count <= ITEM_STACK_COUNT)
+            {
+                SpawnNewItem(item, slot).count = count;
+                return 0;
+            }
+            else if (item.stackable && count > ITEM_STACK_COUNT)
+            {
+                SpawnNewItem(item, slot).count = ITEM_STACK_COUNT;
+                return count - ITEM_STACK_COUNT;
+            }
+            else
+            {
+                SpawnNewItem(item, slot);
+                return count - 1;
+            }
+        }
+
+        //if slot's not emply and se can stack
+        if (item.stackable && itemInSlot != null && itemInSlot.item == item && itemInSlot.count < ITEM_STACK_COUNT)
+        {
+            //get the amount of space the slot has left
+            int space = ITEM_STACK_COUNT - itemInSlot.count;
+
+            if (count <= space)//add the items to the stack if the stack has the space
+            {
+                itemInSlot.count += count;
+                itemInSlot.RefreshCount();
+                return 0;
+            }
+            else//make it a full stack and make a new stack of the remaining items
+            {
+                itemInSlot.count += space;
+                itemInSlot.RefreshCount();
+                return count - space;
+            }
+        }
+
+        //failed to add to inventory
+        return count;
+    }
+
     //returns the amount of items that fialed to be put into the inventory
     public int RemoveItem(Item item, int count = 1)
     {

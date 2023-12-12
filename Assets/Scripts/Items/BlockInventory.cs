@@ -30,6 +30,11 @@ public class BlockInventory : Inventory
         }
     }
 
+    private void OnDestroy()
+    {
+        GameManager.Instance.RemoveBlockInventory(this);
+    }
+
     public virtual void OnSetupFinished()
     {
 

@@ -77,7 +77,7 @@ public class WorldManager : MonoBehaviour
 
     public static string GetWorldsDirectory()
     {
-        return Application.persistentDataPath + "/" + worldFolder;
+        return Path.Combine(Application.persistentDataPath, worldFolder);
     }
 
     public static void SetUpWorldsDirectory()
@@ -93,14 +93,20 @@ public class WorldManager : MonoBehaviour
         loadCommand = command;
     }
 
-    public async void CreateNewWorld(string worldName, int seed)
+    public void CreateNewWorld(string worldName, int seed)
+    {
+        StartCoroutine(CreateNewWorldAsync(worldName, seed));
+    }
+
+    public IEnumerator CreateNewWorldAsync(string worldName, int seed)
     {
         OnCreateWorldStarted?.Invoke();
 
         currentWorldName = worldName;
 
-        //generate the map
-        await mapGeneration.GenerateMapAsync(seed);
+        //generate the map asyncrenously
+        yield return StartCoroutine(mapGeneration.GenerateMapAsync(seed));
+
 
         //find a spawnpoint for the player
         player.transform.position = FindPlayerSpawnPos();
@@ -201,6 +207,9 @@ public class WorldManager : MonoBehaviour
         InventorySlotData playerHandData = PlayerHandManager.Instance.GetHandData();
         worldData.playerHand = playerHandData;
 
+        //save the world time
+        worldData.worldTime = TimeManager.instance.worldTime;
+
         //save the block inventories
         foreach(BlockInventory blockInventory in GameManager.Instance.blockInventories)
         {
@@ -213,22 +222,28 @@ public class WorldManager : MonoBehaviour
 
         //save the file to the computer
         string json = JsonUtility.ToJson(worldData, true);
-        File.WriteAllText(GetWorldsDirectory() + "/" + worldName + ".json", json);
+        File.WriteAllText(Path.Combine(GetWorldsDirectory(), worldName + ".json"), json);
 
         OnSavingEnded?.Invoke();
     }
 
-    public async void LoadWorld(string worldName)
+    public void LoadWorld(string worldName)
+    {
+        StartCoroutine(LoadWorldAsync(worldName));
+    }
+
+    public IEnumerator LoadWorldAsync(string worldName)
     {
         OnLoadingStarted?.Invoke();
 
         currentWorldName = worldName;
 
         string filePath = GetWorldsDirectory() + "/" + worldName + ".json";
+        yield return null;
 
         if (File.Exists(filePath))
         {
-            string json = await ReadFileAsync(filePath);
+            string json = File.ReadAllText(filePath);
             WorldData worldData = JsonUtility.FromJson<WorldData>(json);
 
             foreach (LayerData layerData in worldData.layers)
@@ -247,7 +262,9 @@ public class WorldManager : MonoBehaviour
                         }
                     }
                 }
+                yield return null;
             }
+
 
             // Set player position
             player.transform.position = worldData.playerPos;
@@ -258,8 +275,11 @@ public class WorldManager : MonoBehaviour
             //load the players hand
             PlayerHandManager.Instance.LoadHandData(worldData.playerHand);
 
+            //load the world time
+            TimeManager.instance.worldTime = worldData.worldTime;
+
             //load the block inventories
-            foreach(BlockInventoryData data in worldData.blockInventories)
+            foreach (BlockInventoryData data in worldData.blockInventories)
             {
                 BlockInventory blockInventory = layers[(int)Tilemaps.Main].GetInstantiatedObject(data.pos).GetComponent<BlockInventory>();
                 GameManager.Instance.SetupBlockInventory(blockInventory);
@@ -274,13 +294,7 @@ public class WorldManager : MonoBehaviour
         OnLoadingEnded?.Invoke();
     }
 
-    private async Task<string> ReadFileAsync(string filePath)
-    {
-        using (StreamReader reader = File.OpenText(filePath))
-        {
-            return await reader.ReadToEndAsync();
-        }
-    }
+
 
     public Item GetItemFromItemId(string id)
     {
@@ -295,6 +309,7 @@ public class WorldData
     public Vector3 playerPos = new Vector3();
     public InventoryData playerInventory;
     public InventorySlotData playerHand;
+    public float worldTime;
     public List<BlockInventoryData> blockInventories = new List<BlockInventoryData>();
     public List<LayerData> layers = new List<LayerData>();
 }

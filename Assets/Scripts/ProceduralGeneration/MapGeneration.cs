@@ -42,17 +42,12 @@ public class MapGeneration : MonoBehaviour
     public RecourseGen[] recourceList;
 
 
-    private async void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            await GenerateMapAsync(Random.Range(0,1000));
-        }
     }
 
-    public async Task GenerateMapAsync(int seed)
+    public IEnumerator GenerateMapAsync(int seed)
     {
-        await Task.Yield(); // Yield briefly to ensure this method is asynchronous.
 
         // GETS ALL OF THE SEEDS
         foreach (Wave wave in heightWaves)
@@ -72,55 +67,28 @@ public class MapGeneration : MonoBehaviour
             wave.seed = seed * vegetationWaveOffset;
         }
 
-        //CALCULATES ALL OF THE MAPS
-        // height map (Calculate asynchronously)
-        Task<float[,]> heightMapTask = Task.Run(() =>
-        {
-            return ProceduralGeneration.Generate(width, height, scale, heightWaves, offset);
-        });
-
-        // moisture map (Calculate asynchronously)
-        Task<float[,]> moistureMapTask = Task.Run(() =>
-        {
-            return ProceduralGeneration.Generate(width, height, scale, moistureWaves, offset);
-        });
-
-        // heat map (Calculate asynchronously)
-        Task<float[,]> heatMapTask = Task.Run(() =>
-        {
-            return ProceduralGeneration.Generate(width, height, scale, heatWaves, offset);
-        });
-
-        // vegetation map (Calculate asynchronously)
-        Task<float[,]> vegetationMapTask = Task.Run(() =>
-        {
-            return ProceduralGeneration.Generate(width, height, scale, vegetationWaves, offset);
-        });
-
-        // Wait for all calculations to complete
-        await Task.WhenAll(heightMapTask, moistureMapTask, heatMapTask, vegetationMapTask);
-
         // Retrieve the generated maps
-        heightMap = heightMapTask.Result;
-        moistureMap = moistureMapTask.Result;
-        heatMap = heatMapTask.Result;
-        vegetationMap = vegetationMapTask.Result;
-
-        //list of blocks and positions;
-
-
+        heightMap = ProceduralGeneration.Generate(width, height, scale, heightWaves, offset);
+        yield return null;
+        moistureMap = ProceduralGeneration.Generate(width, height, scale, moistureWaves, offset);
+        yield return null;
+        heatMap = ProceduralGeneration.Generate(width, height, scale, heatWaves, offset);
+        yield return null;
+        vegetationMap = ProceduralGeneration.Generate(width, height, scale, vegetationWaves, offset);
+        yield return null;
 
         //generate water boarder
         for (int x = -1; x < width + 1; ++x)
         {
             for (int y = -1; y < height + 1; ++y)
             {
-                if ( x <= width && x > 0 && y <= height && y > 0)
+                if ( (x >= width || x < 0) || (y >= height || y < 0))
                 {
                     groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), groundBiomes[0].GetTile());
                 }
             }
         }
+        yield return null;
 
         //generate ground
         for (int x = 0; x < width; ++x)
@@ -130,6 +98,7 @@ public class MapGeneration : MonoBehaviour
                 TileBase tile = GetBiome(heightMap[x, y], moistureMap[x, y], heatMap[x, y], vegetationMap[x, y], groundBiomes).GetTile();
                 groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), tile);
             }
+            yield return null;
         }
 
         //generate surface things
@@ -148,6 +117,7 @@ public class MapGeneration : MonoBehaviour
                     mainMap.SetTile(new Vector3Int(x + offset.x, y + offset.y, 0), tile);
                 }
             }
+            yield return null;
         }
 
         //generate recouses

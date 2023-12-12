@@ -15,6 +15,7 @@ public class Item : ScriptableObject
 
     [Header("Only Gameplay")]
     public ItemType type;
+    public int fuelStrength = 0;//the amount of fire it adds to a smelter
 
     [Header("Only UI")]
     [Multiline()]

@@ -301,6 +301,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AltClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""b6a78c0a-10b3-46ac-83a4-908286bc2531"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -369,6 +378,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""DropItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f4c977c-15e4-45dd-99de-a2ef1dc05f48"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AltClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -389,6 +409,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Inventory_Open = m_Inventory.FindAction("Open", throwIfNotFound: true);
         m_Inventory_Click = m_Inventory.FindAction("Click", throwIfNotFound: true);
         m_Inventory_DropItem = m_Inventory.FindAction("DropItem", throwIfNotFound: true);
+        m_Inventory_AltClick = m_Inventory.FindAction("AltClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -562,6 +583,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Inventory_Open;
     private readonly InputAction m_Inventory_Click;
     private readonly InputAction m_Inventory_DropItem;
+    private readonly InputAction m_Inventory_AltClick;
     public struct InventoryActions
     {
         private @PlayerControls m_Wrapper;
@@ -570,6 +592,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Open => m_Wrapper.m_Inventory_Open;
         public InputAction @Click => m_Wrapper.m_Inventory_Click;
         public InputAction @DropItem => m_Wrapper.m_Inventory_DropItem;
+        public InputAction @AltClick => m_Wrapper.m_Inventory_AltClick;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -591,6 +614,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DropItem.started += instance.OnDropItem;
             @DropItem.performed += instance.OnDropItem;
             @DropItem.canceled += instance.OnDropItem;
+            @AltClick.started += instance.OnAltClick;
+            @AltClick.performed += instance.OnAltClick;
+            @AltClick.canceled += instance.OnAltClick;
         }
 
         private void UnregisterCallbacks(IInventoryActions instance)
@@ -607,6 +633,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DropItem.started -= instance.OnDropItem;
             @DropItem.performed -= instance.OnDropItem;
             @DropItem.canceled -= instance.OnDropItem;
+            @AltClick.started -= instance.OnAltClick;
+            @AltClick.performed -= instance.OnAltClick;
+            @AltClick.canceled -= instance.OnAltClick;
         }
 
         public void RemoveCallbacks(IInventoryActions instance)
@@ -640,5 +669,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnOpen(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
         void OnDropItem(InputAction.CallbackContext context);
+        void OnAltClick(InputAction.CallbackContext context);
     }
 }

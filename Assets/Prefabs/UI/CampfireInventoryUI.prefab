@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 6291659109074274643}
   - component: {fileID: 5538383538997102333}
   - component: {fileID: 8897583248524541311}
+  - component: {fileID: 6030212851697517759}
   m_Layer: 5
   m_Name: CampfireInventoryUI
   m_TagString: Untagged
@@ -169,6 +170,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6030212851697517759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358783917753727419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9958b7e0f0e08ec4da3ca6426686c921, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smealtingProgressSlider: {fileID: 4073890515147130955}
+  fireImage: {fileID: 3082051522880097582}
+  flameSprite: {fileID: 411651881, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
+  noFlameSprite: {fileID: -745137672, guid: eaf9e17ef077bae408ba8c1ff71dd4bc, type: 3}
 --- !u!1 &4340776982830965568
 GameObject:
   m_ObjectHideFlags: 0

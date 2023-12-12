@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71379b9df7ab2004bbae9a4894409b4b, type: 3}
-  m_Name: IronSmeltingRecipe
+  m_Name: GoldSmeltingRecipe
   m_EditorClassIdentifier: 
   ingredients:
-  - item: {fileID: 11400000, guid: 27352d438038c454aa85a10a2f513c97, type: 2}
+  - item: {fileID: 11400000, guid: 5d533667760a3204a8bcc99aeb9f3db8, type: 2}
     count: 1
   product:
-    item: {fileID: 11400000, guid: 113532d3024b7e641b7ff69df976f1ed, type: 2}
+    item: {fileID: 11400000, guid: bf09b6f17fde4ab4696cb2569ab14dbb, type: 2}
     count: 1
   type: 1

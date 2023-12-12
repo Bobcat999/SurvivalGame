@@ -12,10 +12,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
+        Instance = this;
 
         //setup the controlls
         controls = new PlayerControls();
@@ -117,7 +114,7 @@ public class GameManager : MonoBehaviour
     public void OpenInventoryUI(Transform panel = null)
     {
         CloseInventoryUI();
-        
+
         if (panel == null)
         {
             panel = craftingInventory;
@@ -154,7 +151,7 @@ public class GameManager : MonoBehaviour
 
     public void Open_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if(IsInventoryOpen())
+        if (IsInventoryOpen())
         {
             CloseInventoryUI();
         }

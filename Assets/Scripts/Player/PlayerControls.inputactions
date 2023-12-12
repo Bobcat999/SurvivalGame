@@ -279,6 +279,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "AltClick",
+                    "type": "Button",
+                    "id": "b6a78c0a-10b3-46ac-83a4-908286bc2531",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -345,6 +354,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "DropItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3f4c977c-15e4-45dd-99de-a2ef1dc05f48",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AltClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

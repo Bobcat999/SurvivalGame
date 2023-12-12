@@ -77,7 +77,6 @@ public class PlayerMovement : MonoBehaviour
 
         //set the animation visuals
         counter += Time.deltaTime;
-        Debug.Log(movement.magnitude);
         if (movement.magnitude >= occurAfterVelocity && counter > dustFormationPeriod)
         {
             counter = 0;

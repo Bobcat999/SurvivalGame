@@ -23,7 +23,7 @@ namespace Assets.Scripts.Items
         int currentFlame = 0;
         bool isSmelting = false;
 
-        const float SMELT_TIME = 2f;
+        const float SMELT_TIME = 4f;
 
         public override void OnSetupFinished()
         {

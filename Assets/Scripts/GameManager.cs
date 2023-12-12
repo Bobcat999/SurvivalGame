@@ -16,8 +16,8 @@ public class GameManager : MonoBehaviour
 
         //setup the controlls
         controls = new PlayerControls();
-        controls.Enable();
-        controls.Inventory.Scroll.performed += Scroll_performed;
+        controls.Enable();/*
+        controls.Inventory.Scroll.performed += Scroll_performed;*/
         controls.Inventory.Open.performed += Open_performed;
         controls.Player.Interact.performed += Interact_performed;
     }
@@ -29,8 +29,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //select a slot in the players inventory
-        playerInventory.SetSelectedSlot(0);
+        /*//select a slot in the players inventory
+        playerInventory.SetSelectedSlot(0);*/
+
+
         //give player items to start with
         foreach (Item item in startItems)
         {
@@ -42,7 +44,7 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-        //change the selected slot in a players inventory based on input
+        /*//change the selected slot in a players inventory based on input
         if (Input.inputString != null)
         {
             bool isNumber = int.TryParse(Input.inputString, out int number);
@@ -50,7 +52,7 @@ public class GameManager : MonoBehaviour
             {
                 playerInventory.SetSelectedSlot(number - 1);
             }
-        }
+        }*/
     }
 
     #region Block Inventories
@@ -161,7 +163,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Scroll_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    /*private void Scroll_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         if (!IsInventoryOpen())
         {
@@ -169,7 +171,7 @@ public class GameManager : MonoBehaviour
             int numScroll = (scroll > 0) ? -1 : 1;
             playerInventory.ChangeSelectedSlot(numScroll);
         }
-    }
+    }*/
     #endregion
 
 }

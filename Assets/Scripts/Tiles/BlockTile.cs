@@ -7,7 +7,8 @@ public class BlockTile : GameTile
 {
     public Item item;
 
-    public BreakType breakType;
+    public BreakType breakType = BreakType.None;
+    public ToolMaterial minToolMaterial = ToolMaterial.None;
     public float breakTime = 1f;
 
     [SerializeField] int minDropAmount = 1;
@@ -18,6 +19,11 @@ public class BlockTile : GameTile
     public virtual void OnBlockBroken()
     {
 
+    }
+
+    public bool CanBreakBlock(Item handItem)
+    {
+        return handItem != null && (int)handItem.toolMaterial >= (int)minToolMaterial;
     }
 
 

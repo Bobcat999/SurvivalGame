@@ -17,7 +17,7 @@ public class TimeManager : MonoBehaviour
     public const float NIGHT_TIME = 3f * 60f;
     public const float DAY_NIGHT_CYCLE = DAY_TIME + NIGHT_TIME;
     public const float MIN_INTENSITY = .01f;
-    public const float MAX_INTENSITY = .5f;
+    public const float MAX_INTENSITY = .6f;
     //allways day before night
 
     [SerializeField] Gradient dayNightGradient;

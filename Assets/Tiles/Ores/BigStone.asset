@@ -23,6 +23,7 @@ MonoBehaviour:
   tilemap: 0
   item: {fileID: 11400000, guid: d35868aa4779de849b470b443534fd98, type: 2}
   breakType: 0
-  breakTime: 5
+  minToolMaterial: 1
+  breakTime: 7
   minDropAmount: 2
   maxDropAmount: 5

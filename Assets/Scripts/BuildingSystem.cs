@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
@@ -45,22 +46,7 @@ public class BuildingSystem : MonoBehaviour
         //handle input
         controlls = new PlayerControls();
         controlls.Player.Enable();
-        controlls.Player.Interact.performed += Interact_performed;
 
-    }
-
-    private void OnDestroy()
-    {
-        controlls.Player.Interact.performed -= Interact_performed;
-    }
-
-    private void Interact_performed(InputAction.CallbackContext obj)
-    {
-        Item item = GetSelectedItem();
-        if (CheckPlaceCondition(mainTilemap.GetTile<BlockTile>(highlightedTilePos), item))//if you can preform an action
-        {
-            Build(highlightedTilePos, item);
-        }
     }
 
 
@@ -69,14 +55,14 @@ public class BuildingSystem : MonoBehaviour
         BlockTile tile = mainTilemap.GetTile<BlockTile>(highlightedTilePos);
         if (CheckBreakCondition(tile))
         {
-            currentBreakCommand = new BreakCommand(GetSelectedItem(), tile, highlightedTilePos);
+            currentBreakCommand = new BreakCommand(GetHandItem(), tile, highlightedTilePos);
         }
 
     }
 
-    private Item GetSelectedItem()
+    private Item GetHandItem()
     {
-        Item item = GameManager.Instance.playerInventory.GetSelectedItem(false);//get the current item without using it
+        Item item = PlayerHandManager.Instance.GetHandItem(false);//get the current item without using it
         if (item == null)
             item = fistItem;
         return item;
@@ -97,15 +83,26 @@ public class BuildingSystem : MonoBehaviour
 
             //LOGIC TO CHECK IF WE CAN PREFORM AN ACTION
 
-            HighlightTile(GetSelectedItem());
+            HighlightTile(GetHandItem());
+        }
+
+
+        //place blocks
+        if(controlls.Player.Interact.IsPressed())
+        {
+            Item item = GetHandItem();
+            if (CheckPlaceCondition(mainTilemap.GetTile<BlockTile>(highlightedTilePos), item))//if you can preform an action
+            {
+                Build(highlightedTilePos, item);
+            }
         }
 
         //start or end any Break commands
-        if (currentBreakCommand != null &&
+        if (currentBreakCommand != null &&//END THE COMMAND
             (!highlighted
             || !controlls.Player.Mine.IsPressed()
             || currentBreakCommand.tilePos != highlightedTilePos
-            || GetSelectedItem() != currentBreakCommand.tool))//END THE COMMAND
+            || GetHandItem() != currentBreakCommand.tool))
         {
             EndCurrentBreak();
         }
@@ -151,7 +148,7 @@ public class BuildingSystem : MonoBehaviour
         tempTilemap.SetTile(highlightedTilePos, null);//sets the old highlight to null
 
         //make sure its in range, the tile underneath isnt water and check if the conditions are right for it to get highlighted
-        if (InRange(playerPos, mouseGridPos, currentItem.range) && groundTilemap.GetTile(mouseGridPos) != water && CheckHighlightCondition(mainTilemap.GetTile<BlockTile>(mouseGridPos), currentItem))
+        if (!MouseOverUI() && InRange(playerPos, mouseGridPos, currentItem.range) && groundTilemap.GetTile(mouseGridPos) != water && CheckHighlightCondition(mainTilemap.GetTile<BlockTile>(mouseGridPos), currentItem))
         {
             //highlight the tile
             tempTilemap.SetTile(mouseGridPos, hightlightTile);
@@ -167,6 +164,12 @@ public class BuildingSystem : MonoBehaviour
             highlighted = false;//unhighlight
         }
 
+    }
+
+
+    public bool MouseOverUI()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
     }
 
     private bool InRange(Vector3Int positionA, Vector3Int positionB, Vector3Int range)
@@ -229,7 +232,7 @@ public class BuildingSystem : MonoBehaviour
         highlighted = false;
 
         //remove item from inventory
-        GameManager.Instance.playerInventory.GetSelectedItem(true);
+        PlayerHandManager.Instance.GetHandItem(true);
 
         mainTilemap.SetTile(position, itemToBuild.tile);
     }
@@ -242,24 +245,26 @@ public class BuildingSystem : MonoBehaviour
 
 
         BlockTile tile = mainTilemap.GetTile<BlockTile>(position);
-        //run anything we need on the block
-        tile.OnBlockBroken();
-
-        //if there is a block inventory, drop the loot
-        GameObject instantiatedObj = mainTilemap.GetInstantiatedObject(position);
-        if (instantiatedObj != null && instantiatedObj.GetComponent<BlockInventory>())
+        if (tile.CanBreakBlock(GetHandItem()))//only if we can break it
         {
-            instantiatedObj.GetComponent<BlockInventory>().OnInventoryDestroyed();
+            //run anything we need on the block
+            tile.OnBlockBroken();
+
+            //if there is a block inventory, drop the loot
+            GameObject instantiatedObj = mainTilemap.GetInstantiatedObject(position);
+            if (instantiatedObj != null && instantiatedObj.GetComponent<BlockInventory>())
+            {
+                instantiatedObj.GetComponent<BlockInventory>().OnInventoryDestroyed();
+            }
+
+            //set the tile to null
+            mainTilemap.SetTile(position, null);
+
+            //drop the tile loot
+            Vector3 pos = mainTilemap.GetCellCenterWorld(position);
+            GameObject loot = Instantiate(lootPrafab, pos, Quaternion.identity);
+            loot.GetComponent<Loot>().Initialize(tile.item, tile.dropAmount);
+
         }
-
-        //set the tile to null
-        mainTilemap.SetTile(position, null);
-
-        //drop the tile loot
-        Vector3 pos = mainTilemap.GetCellCenterWorld(position);
-        GameObject loot = Instantiate(lootPrafab, pos, Quaternion.identity);
-        loot.GetComponent<Loot>().Initialize(tile.item, tile.dropAmount);
-
-
     }
 }

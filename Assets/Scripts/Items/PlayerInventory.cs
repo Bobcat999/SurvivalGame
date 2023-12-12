@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerInventory : Inventory
 {
 
-    int selectedSlot = 0;
+    /*int selectedSlot = 0;
 
     public void SetSelectedSlot(int newValue)
     {
@@ -49,7 +49,7 @@ public class PlayerInventory : Inventory
         }
 
         return null;
-    }
+    }*/
 
     
 }

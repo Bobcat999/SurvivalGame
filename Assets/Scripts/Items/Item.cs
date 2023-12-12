@@ -30,6 +30,7 @@ public class Item : ScriptableObject
     [HideInInspector] public TileBase tile;
     [HideInInspector] public Vector3Int range = new Vector3Int(5, 5, 0);//default value
     [HideInInspector] public BreakType breakingType = BreakType.None;
+    [HideInInspector] public ToolMaterial toolMaterial = ToolMaterial.None;
     [HideInInspector] public float breakingSpeed = 1f;
 
     #region Editor
@@ -56,6 +57,8 @@ public class Item : ScriptableObject
                 case ItemType.Tool:
                     EditorGUILayout.LabelField("Breaking Type");
                     item.breakingType = (BreakType)EditorGUILayout.EnumPopup(item.breakingType);
+                    EditorGUILayout.LabelField("Tool Material");
+                    item.toolMaterial = (ToolMaterial)EditorGUILayout.EnumPopup(item.toolMaterial);
                     EditorGUILayout.LabelField("Breaking Speed");
                     item.breakingSpeed = EditorGUILayout.FloatField(item.breakingSpeed);
                     break;
@@ -83,4 +86,14 @@ public enum ItemType
     Tool,
     Weapon,
     Item
+}
+
+public enum ToolMaterial//goes from least rare to most rare
+{
+    None,
+    Wood,
+    Stone,
+    Iron,
+    Copper,
+    Gold
 }

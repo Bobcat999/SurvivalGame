@@ -21,8 +21,9 @@ MonoBehaviour:
   checkSelf: 1
   id: campfire
   tilemap: 20
-  item: {fileID: 11400000, guid: aa33906a1d3beb847b254fe9c029a7ea, type: 2}
+  item: {fileID: 11400000, guid: ab1235675ecc04c4aa46cb6d5e8b5be8, type: 2}
   breakType: 1
+  minToolMaterial: 0
   breakTime: 2
-  minDropAmount: 4
-  maxDropAmount: 5
+  minDropAmount: 1
+  maxDropAmount: 1

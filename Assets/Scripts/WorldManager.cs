@@ -113,7 +113,9 @@ public class WorldManager : MonoBehaviour
 
         //setup the players inventory
         //select a slot in the players inventory
-        GameManager.Instance.playerInventory.SetSelectedSlot(0);
+        //GameManager.Instance.playerInventory.SetSelectedSlot(0);
+
+
         //give player items to start with
         foreach (Item item in GameManager.Instance.startItems)
         {

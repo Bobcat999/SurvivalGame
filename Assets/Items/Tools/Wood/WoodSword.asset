@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: wood-sword
   type: 2
+  fuelStrength: 1
   description: Simplest of swords
   stackable: 0
   image: {fileID: 117391071, guid: e8e135f48fa2e2c4681de19c01d4b726, type: 3}

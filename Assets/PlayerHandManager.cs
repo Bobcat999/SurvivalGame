@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -89,7 +90,7 @@ public class PlayerHandManager : MonoBehaviour
                 OnClickedSlot(hitObject.GetComponent<InventorySlot>());
             }
         }
-        else//if we didnt hit anything then just drop it
+        else if (GetHandItem(false) != null && GetHandItem(false).type == ItemType.Item)//if we didnt hit and we are holding an item anything then just drop it
         {
             DropCurrentItem();
         }
@@ -110,6 +111,7 @@ public class PlayerHandManager : MonoBehaviour
     {
         InventoryItem slotItem = slot.GetComponentInChildren<InventoryItem>();//get the other item
         InventoryItem handItem = transform.GetComponentInChildren<InventoryItem>();
+
         if (slotItem == null || handItem == null || slotItem.item != handItem.item)//if the item in our hand and slot dont match then just switch them
         {
             if (transform.childCount > 0)//if we have an item then put it in the other slot
@@ -130,7 +132,7 @@ public class PlayerHandManager : MonoBehaviour
         {
             slotItem.count += handItem.count;
             Debug.Log("Added stacks: " + slotItem.count);
-            if(slotItem.count > Inventory.ITEM_STACK_COUNT)
+            if (slotItem.count > Inventory.ITEM_STACK_COUNT)
             {
                 handItem.count = slotItem.count - Inventory.ITEM_STACK_COUNT;
             }
@@ -150,7 +152,7 @@ public class PlayerHandManager : MonoBehaviour
     {
         InventoryItem slotItem = slot.GetComponentInChildren<InventoryItem>();//get the other item
         InventoryItem handItem = transform.GetComponentInChildren<InventoryItem>();
-        if(slotItem == null && handItem != null)
+        if (slotItem == null && handItem != null)
         {
             slotItem = SpawnNewItem(handItem.item);
             slotItem.transform.SetParent(slot.transform);
@@ -158,13 +160,14 @@ public class PlayerHandManager : MonoBehaviour
             slotItem.RefreshCount();
 
             handItem.count--;
-            handItem.RefreshCount() ;
+            handItem.RefreshCount();
 
-            if(handItem.count == 0)
+            if (handItem.count == 0)
             {
                 Destroy(handItem.gameObject);
             }
-        }else if(slotItem != null && handItem == null && slotItem.count > 1)
+        }
+        else if (slotItem != null && handItem == null && slotItem.count > 1)
         {
             handItem = SpawnNewItem(slotItem.item);
             handItem.transform.SetParent(transform);
@@ -173,7 +176,7 @@ public class PlayerHandManager : MonoBehaviour
 
             slotItem.count = (slotItem.count % 2 == 0) ? slotItem.count / 2 : slotItem.count / 2 + 1;
             slotItem.RefreshCount();
-            
+
         }
     }
 
@@ -195,7 +198,7 @@ public class PlayerHandManager : MonoBehaviour
     public InventorySlotData GetHandData()
     {
         InventoryItem item = GetComponentInChildren<InventoryItem>();
-        if(item != null)
+        if (item != null)
         {
             return new InventorySlotData(item.item.id, item.count);
         }
@@ -203,6 +206,32 @@ public class PlayerHandManager : MonoBehaviour
         {
             return InventorySlotData.NullSlotData();
         }
+    }
+
+    public Item GetHandItem(bool use)
+    {
+        InventoryItem itemInSlot = GetComponentInChildren<InventoryItem>();
+        if (itemInSlot != null)
+        {
+            Item item = itemInSlot.item;
+
+            if (use == true)
+            {
+                itemInSlot.count--;
+                if (itemInSlot.count <= 0)
+                {
+                    Destroy(itemInSlot.gameObject);
+                }
+                else
+                {
+                    itemInSlot.RefreshCount();
+                }
+            }
+
+            return item;
+        }
+
+        return null;
     }
 
     public void LoadHandData(InventorySlotData slotData)

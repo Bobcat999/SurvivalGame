@@ -82,7 +82,7 @@ public class MapGeneration : MonoBehaviour
         {
             for (int y = -1; y < height + 1; ++y)
             {
-                if ( (x >= width || x < 0) || (y >= height || y < 0))
+                if ((x >= width || x < 0) || (y >= height || y < 0))
                 {
                     groundMap.SetTile(new Vector3Int(x + (int)offset.x, y + (int)offset.y, 0), groundBiomes[0].GetTile());
                 }
@@ -113,7 +113,7 @@ public class MapGeneration : MonoBehaviour
                 TileBase groundTile = GetBiome(heightMap[x, y], moistureMap[x, y], heatMap[x, y], vegetationMap[x, y], groundBiomes).GetTile();
                 if (groundTile != null && groundTile != groundBiomes[0].GetTile())
                 {
-                    TileBase tile = GetBiome(heightMap[x, y], moistureMap[x, y], heatMap[x, y], vegetationMap[x,y], treeBiomes).GetTile();
+                    TileBase tile = GetBiome(heightMap[x, y], moistureMap[x, y], heatMap[x, y], vegetationMap[x, y], treeBiomes).GetTile();
                     mainMap.SetTile(new Vector3Int(x + offset.x, y + offset.y, 0), tile);
                 }
             }
@@ -121,7 +121,7 @@ public class MapGeneration : MonoBehaviour
         }
 
         //generate recouses
-        foreach(RecourseGen recourse in recourceList)
+        foreach (RecourseGen recourse in recourceList)
         {
             for (int i = 0; i < recourse.numGens; i++)
             {
@@ -133,7 +133,24 @@ public class MapGeneration : MonoBehaviour
                     y = Random.Range(0, height);
                 } while (groundMap.GetTile(new Vector3Int(x + offset.x, y + offset.y, 0)) == groundBiomes[0].GetTile());
 
-                mainMap.SetTile(new Vector3Int(x + offset.x, y + offset.y, 0), recourse.tile);
+                int numRecourses = Random.Range(recourse.minPerGen, recourse.maxPerGen);
+
+                for (int j = 0; j < numRecourses; j++)
+                {
+                    int recourseX;
+                    int recourseY;
+
+                    do {
+                        recourseX = x + Random.Range(-recourse.spread, recourse.spread);
+                        recourseY = y + Random.Range(-recourse.spread, recourse.spread);
+
+                    } while (groundMap.GetTile(new Vector3Int(recourseX + offset.x, recourseY + offset.y, 0)) == null 
+                    || groundMap.GetTile(new Vector3Int(recourseX + offset.x, recourseY + offset.y, 0)) == groundBiomes[0].GetTile());
+
+                    mainMap.SetTile(new Vector3Int(recourseX + offset.x, recourseY + offset.y, 0), recourse.tile);
+
+
+                }
             }
         }
     }
@@ -165,9 +182,10 @@ public class MapGeneration : MonoBehaviour
                 {
                     biomeToReturn = biome.biome;
                     curVal = diffVal;
-                }else if( diffVal == curVal)
+                }
+                else if (diffVal == curVal)
                 {
-                    biomeToReturn = (Random.Range(0f, 1f) > .5f)?biome.biome:biomeToReturn;
+                    biomeToReturn = (Random.Range(0f, 1f) > .5f) ? biome.biome : biomeToReturn;
                 }
             }
         }
@@ -197,5 +215,7 @@ public class RecourseGen
 {
     public BlockTile tile;
     public int numGens;
-
+    public int maxPerGen = 1;
+    public int minPerGen = 1;
+    public int spread;
 }

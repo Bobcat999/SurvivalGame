@@ -20,7 +20,7 @@ public class WorldEditUI : MonoBehaviour
         saveChangesButton.onClick.AddListener(() =>
         {
             //change the file name
-            File.Move(worldFile, Path.Combine(Path.GetDirectoryName(worldFile), newWorldNameInputField.text));
+            File.Move(worldFile, Path.Combine(Path.GetDirectoryName(worldFile), newWorldNameInputField.text + ".json"));
             Loader.Load(Loader.Scene.WorldSelectScene);
         });
         deleteWorldButton.onClick.AddListener(() =>

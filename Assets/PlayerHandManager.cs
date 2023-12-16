@@ -27,6 +27,7 @@ public class PlayerHandManager : MonoBehaviour
         controls.Inventory.DropItem.performed += DropItem_performed;
     }
 
+
     private void AltClick_performed(InputAction.CallbackContext obj)
     {
         // Create a pointer event data
@@ -105,6 +106,16 @@ public class PlayerHandManager : MonoBehaviour
     {
         //set the position as the mouse position
         transform.position = Mouse.current.position.value;
+
+        //hotswap with a slot based on input
+        if (Input.inputString != null)
+        {
+            bool isNumber = int.TryParse(Input.inputString, out int number);
+            if (isNumber && number > 0 && number < 10)
+            {
+                OnClickedSlot(GameManager.Instance.playerInventory.GetInventorySlots()[number - 1/* minus 1 because slots start at 0 and input starts at 1*/]);
+            }
+        }
     }
 
     public void OnClickedSlot(InventorySlot slot)

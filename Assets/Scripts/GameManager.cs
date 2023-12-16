@@ -44,15 +44,7 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-        /*//change the selected slot in a players inventory based on input
-        if (Input.inputString != null)
-        {
-            bool isNumber = int.TryParse(Input.inputString, out int number);
-            if (isNumber && number > 0 && number < 10)
-            {
-                playerInventory.SetSelectedSlot(number - 1);
-            }
-        }*/
+        
     }
 
     #region Block Inventories

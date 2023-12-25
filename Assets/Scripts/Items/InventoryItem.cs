@@ -34,7 +34,15 @@ public class InventoryItem : MonoBehaviour //, IBeginDragHandler, IEndDragHandle
 
         //setup the tooltip
         tooltip.header = item.name;
-        tooltip.content = item.description;
+        switch (item.type)
+        {
+            case ItemType.Tool:
+                tooltip.content = "Breaking Speed: " + item.breakingSpeed + "\n" + item.description;
+                break;
+            default:
+                tooltip.content = item.description;
+                break;
+        }
 
         RefreshCount();
     }

@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 3603230920491326240}
   - component: {fileID: 6713946062552255841}
   - component: {fileID: 634724085209005011}
+  - component: {fileID: 9110643362508764315}
   m_Layer: 5
   m_Name: ChestInventory
   m_TagString: Untagged
@@ -211,6 +212,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9110643362508764315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8415903850447266218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2036a4663e50c044814d13cda88db3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: Chest
+  content: 
 --- !u!1 &8467557187901678066
 GameObject:
   m_ObjectHideFlags: 0
